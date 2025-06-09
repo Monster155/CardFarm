@@ -1,6 +1,6 @@
 using System;
 using Dajjsand.Controllers.Game.Cards;
-using Dajjsand.Controllers.Game.LoadingController;
+using Dajjsand.Controllers.Game.Controllers.Loading;
 using Dajjsand.Controllers.Game.Utils;
 using Dajjsand.Controllers.Game.Utils.Constants;
 using UnityEngine;

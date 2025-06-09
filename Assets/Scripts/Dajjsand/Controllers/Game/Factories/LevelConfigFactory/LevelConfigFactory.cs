@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dajjsand.Controllers.Game.LoadingController;
+using Dajjsand.Controllers.Game.Controllers.Loading;
 using Dajjsand.Controllers.Game.ScriptableObjects;
 using Dajjsand.Controllers.Game.Utils.Constants;
 using UnityEngine;

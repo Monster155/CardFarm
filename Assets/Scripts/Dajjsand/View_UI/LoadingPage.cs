@@ -1,4 +1,4 @@
-﻿using Dajjsand.Controllers.Game.LoadingController;
+﻿using Dajjsand.Controllers.Game.Controllers.Loading;
 using UnityEngine;
 using Zenject;
 

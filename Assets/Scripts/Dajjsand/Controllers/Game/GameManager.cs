@@ -1,6 +1,6 @@
-﻿using Dajjsand.Controllers.Game.Factories.CardFactory;
+﻿using Dajjsand.Controllers.Game.Controllers.Loading;
+using Dajjsand.Controllers.Game.Factories.CardFactory;
 using Dajjsand.Controllers.Game.Factories.LevelConfigFactory;
-using Dajjsand.Controllers.Game.LoadingController;
 using Dajjsand.Controllers.Game.Managers.Save;
 
 namespace Dajjsand.Controllers.Game
