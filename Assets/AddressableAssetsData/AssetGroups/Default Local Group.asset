@@ -15,6 +15,16 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: b4f06a309d840fc44b8a459694e1dd11
   m_SerializeEntries:
+  - m_GUID: a6f41fccec56bca4cbfa1f18e581e726
+    m_Address: LevelConfigs
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d243b4c39dc60814599a6cf543661fd4
+    m_Address: LevelConfigs
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eaf61d0de84940b4ba2256699f2dc27c
     m_Address: BaseCardPrefab
     m_ReadOnly: 0

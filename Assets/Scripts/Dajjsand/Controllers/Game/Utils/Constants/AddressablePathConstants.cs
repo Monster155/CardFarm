@@ -3,5 +3,6 @@
     public class AddressablePathConstants
     {
         public const string BaseCardPrefab = "BaseCardPrefab";
+        public const string LevelsConfigs = "LevelConfigs";
     }
 }

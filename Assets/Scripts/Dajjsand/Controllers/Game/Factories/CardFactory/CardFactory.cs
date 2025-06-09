@@ -9,7 +9,7 @@ using UnityEngine.Pool;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Object = UnityEngine.Object;
 
-namespace Dajjsand.Controllers.Game.CardFactory
+namespace Dajjsand.Controllers.Game.Factories.CardFactory
 {
     public class CardFactory : ICardFactory, ILoadable
     {

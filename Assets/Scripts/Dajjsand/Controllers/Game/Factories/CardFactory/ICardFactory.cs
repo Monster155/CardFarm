@@ -1,6 +1,6 @@
 ﻿using Dajjsand.Controllers.Game.Cards;
 
-namespace Dajjsand.Controllers.Game.CardFactory
+namespace Dajjsand.Controllers.Game.Factories.CardFactory
 {
     public interface ICardFactory
     {
