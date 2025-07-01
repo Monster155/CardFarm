@@ -5,34 +5,43 @@ namespace Dajjsand.Controllers.Game.Managers.Save
     public class SaveManager : ISaveManager
     {
         private int _currentLevelIndex;
-        private bool _isFirstLoad;
+        private int _maxReachedLevelIndex;
+        private int[] _starsByLevelIndex;
 
         public SaveManager()
         {
-            _currentLevelIndex = PlayerPrefs.GetInt("CurrentLevelIndex", 1);
-            _isFirstLoad = PlayerPrefs.GetInt("IsFirstLoad", 1) == 1;
+            _currentLevelIndex = PlayerPrefs.GetInt("CurrentLevelIndex", 0);
+            _maxReachedLevelIndex = PlayerPrefs.GetInt("MaxReachedLevelIndex", 0);
+            
+            _starsByLevelIndex = new int[_maxReachedLevelIndex + 1];
+            for (int levelIndex = 0; levelIndex < _maxReachedLevelIndex; levelIndex++)
+                _starsByLevelIndex[levelIndex] = PlayerPrefs.GetInt($"StarsByLevelIndex_{levelIndex}", 0);
         }
 
         public void SaveCurrentLevelIndex(int levelIndex)
         {
-            PlayerPrefs.SetInt("CurrentLevel", levelIndex);
+            PlayerPrefs.SetInt("CurrentLevelIndex", levelIndex);
             PlayerPrefs.Save();
             _currentLevelIndex = levelIndex;
-
-            if (_isFirstLoad)
-                SetFirstLoadComplete();
         }
 
-        public void SetFirstLoadComplete()
+        public int GetCurrentLevelIndex() => _currentLevelIndex;
+        
+        public void SaveMaxReachedLevelIndex(int levelIndex)
         {
-            _isFirstLoad = false;
-            PlayerPrefs.SetInt("IsFirstLoad", 0);
+            PlayerPrefs.SetInt("MaxReachedLevelIndex", levelIndex);
+            PlayerPrefs.Save();
+            _maxReachedLevelIndex = levelIndex;
+        }
+        
+        public int GetMaxReachedLevelIndex() => _maxReachedLevelIndex;
+        
+        public void SetStarsByLevelIndex(int levelIndex, int stars)
+        {
+            PlayerPrefs.SetInt($"StarsByLevelIndex_{levelIndex}", levelIndex);
             PlayerPrefs.Save();
         }
-
-        public int GetCurrentLevelIndex()
-        {
-            return _currentLevelIndex;
-        }
+        
+        public int[] GetStarsByLevelIndex() => _starsByLevelIndex;
     }
 }

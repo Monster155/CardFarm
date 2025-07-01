@@ -1,0 +1,19 @@
+VisualElement {
+}
+
+.main_menu__button {
+    width: 300px;
+    height: 120px;
+    background-image: url("project://database/Assets/Sprites/Menu/PlayButton.png?fileID=21300000&guid=cc27bcdb7638b8a4d898c582b9f8c7b8&type=3#PlayButton");
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    color: rgba(27, 27, 27, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}

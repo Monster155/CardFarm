@@ -7,6 +7,7 @@ namespace Dajjsand.Controllers.Game.Controllers.Loading
     public class LoadController : ILoadController
     {
         public event Action OnAllLoaded;
+        public event Action<float> OnPercentageChanged;
 
         public bool IsAllLoaded { get; private set; }
 
@@ -34,7 +35,10 @@ namespace Dajjsand.Controllers.Game.Controllers.Loading
 
         private void Loadable_OnLoadComplete()
         {
-            if (_loadables.Any(l => !l.IsLoaded))
+            int loadedCount = _loadables.Count(l => l.IsLoaded);
+            OnPercentageChanged?.Invoke((float)loadedCount / _loadables.Count);
+
+            if (loadedCount < _loadables.Count)
                 return;
 
             IsAllLoaded = true;

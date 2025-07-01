@@ -1,0 +1,20 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/NewUSSFile.uss?fileID=7433441132597879392&amp;guid=d2ca52621e0c5fa4db3f2bc1b2dfc2ff&amp;type=3#NewUSSFile" />
+    <ui:VisualElement name="MainBG" style="align-items: center; justify-content: center; flex-grow: 1; background-image: url(&quot;project://database/Assets/Sprites/Menu/BG.png?fileID=21300000&amp;guid=054b3d8658947494cb73b870403c63e4&amp;type=3#BG&quot;); -unity-background-scale-mode: scale-and-crop;">
+        <ui:VisualElement style="background-image: url(&quot;project://database/Assets/Sprites/Menu/TitleBG.png?fileID=21300000&amp;guid=d010562aa915baa4ebbe47331aa170bb&amp;type=3#TitleBG&quot;); -unity-background-scale-mode: scale-to-fit; height: 300px; width: 500px; justify-content: center; align-items: center; margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px;">
+            <ui:Label text="CARD&#10;FARM" style="color: rgb(254, 240, 185); width: 100%; height: 100%; font-size: 120px; -unity-text-align: middle-center; white-space: nowrap; -unity-font-style: bold; -unity-paragraph-spacing: -21px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 30px; padding-right: 40px; padding-bottom: 30px; padding-left: 40px;" />
+        </ui:VisualElement>
+        <ui:Button class="main_menu__button" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+            <ui:Label text="Play" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; width: 100%; height: 95%; font-size: 47px; color: rgb(254, 240, 185); -unity-font-style: bold;" />
+        </ui:Button>
+        <ui:Button class="main_menu__button">
+            <ui:Label text="Levels" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; width: 100%; height: 95%; font-size: 47px; color: rgb(254, 240, 185); -unity-font-style: bold;" />
+        </ui:Button>
+        <ui:Button class="main_menu__button">
+            <ui:Label text="Settings" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; width: 100%; height: 95%; font-size: 47px; color: rgb(254, 240, 185); -unity-font-style: bold;" />
+        </ui:Button>
+        <ui:Button class="main_menu__button">
+            <ui:Label text="Exit" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; width: 100%; height: 95%; font-size: 47px; color: rgb(254, 240, 185); -unity-font-style: bold;" />
+        </ui:Button>
+    </ui:VisualElement>
+</ui:UXML>

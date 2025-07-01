@@ -32,15 +32,18 @@ namespace Dajjsand.Controllers.Game.Factories.LevelConfigFactory
             return levelConfig;
         }
 
+        public int GetLevelsCount() => _levelsConfigs.Count;
+
         private void LevelsConfigsLoadingHandle_Completed(AsyncOperationHandle<IList<LevelConfig>> handle)
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
                 _levelsConfigs = new Dictionary<int, LevelConfig>();
-                foreach (LevelConfig config in handle.Result)
+                for (int index = 0; index < handle.Result.Count; index++)
                 {
-                    _levelsConfigs.Add(config.LevelIndex, config);
-                    Debug.Log($"Loaded Level config for level {config.LevelIndex}");
+                    LevelConfig config = handle.Result[index];
+                    _levelsConfigs.Add(index, config);
+                    Debug.Log($"Loaded Level config for level {config._levelName}");
                 }
 
                 IsLoaded = true;
