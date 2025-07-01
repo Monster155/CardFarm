@@ -1,5 +1,6 @@
 using System;
 using Dajjsand.Controllers.Loading;
+using Dajjsand.Enums;
 using Dajjsand.Handlers;
 using Dajjsand.Utils;
 using Dajjsand.Utils.Constants;
@@ -39,9 +40,11 @@ namespace Dajjsand.Factories.CardFactory
             _cardPrefabLoadingHandle.Completed -= OnCardLoadingComplete;
         }
 
-        public BaseCard GetCard()
+        public BaseCard GetCard(CraftIngredient ingredient)
         {
-            return _cardPool.Get();
+            var card = _cardPool.Get();
+            card.Init(ingredient);
+            return card;
         }
 
         public bool ReleaseCard(BaseCard card)

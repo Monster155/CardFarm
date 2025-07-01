@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b20f994e2816416992bcd89af3249da6, type: 3}
   m_Name: LevelConfig 2
   m_EditorClassIdentifier: 
-  LevelIndex: 2
+  _levelNumber: 2
+  _availableRecipes: []
+  _startIngredients: 

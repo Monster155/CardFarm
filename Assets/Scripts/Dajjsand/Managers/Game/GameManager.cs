@@ -1,7 +1,9 @@
-﻿using Dajjsand.Controllers.Loading;
+﻿using Dajjsand.Controllers.GameLoading;
+using Dajjsand.Enums;
 using Dajjsand.Factories.CardFactory;
 using Dajjsand.Factories.LevelConfigFactory;
 using Dajjsand.Managers.Save;
+using Dajjsand.ScriptableObjects;
 
 namespace Dajjsand.Managers.Game
 {
@@ -11,6 +13,8 @@ namespace Dajjsand.Managers.Game
         private ICardFactory _cardFactory;
         private ILevelConfigFactory _levelConfigFactory;
         private ISaveManager _saveManager;
+
+        private LevelConfig _currentLevelConfig;
 
         public GameManager(ILoadController loadController, ICardFactory cardFactory,
             ILevelConfigFactory levelConfigFactory, ISaveManager saveManager)
@@ -30,7 +34,12 @@ namespace Dajjsand.Managers.Game
 
         private void LoadController_OnAllLoaded()
         {
-            _levelConfigFactory.GetLevelConfig(_saveManager.GetCurrentLevelIndex());
+            _currentLevelConfig = _levelConfigFactory.GetLevelConfig(_saveManager.GetCurrentLevelIndex());
+
+            foreach (CraftIngredient ingredient in _currentLevelConfig._startIngredients)
+            {
+                var card = _cardFactory.GetCard(ingredient);
+            }
         }
     }
 }

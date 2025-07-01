@@ -1112,8 +1112,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _loadingScreen: {fileID: 1554348802}
   _gameScene:
-    sceneAsset: {fileID: 102900000, guid: 5349f45084b692a488336f6d622fbcf4, type: 3}
-    scenePath: Assets/FromOld/Scenes/SampleScene.unity
+    sceneAsset: {fileID: 102900000, guid: 8c9cfa26abfee488c85f1582747f6a02, type: 3}
+    scenePath: Assets/Scenes/GameScene.unity
   _levelItemPrefab: {fileID: 4497448128576247281, guid: be65c168102af09449ae702911761904, type: 3}
   _levelItemContainer: {fileID: 1987205993}
 --- !u!1 &589727979

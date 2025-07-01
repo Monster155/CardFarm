@@ -25,9 +25,10 @@ namespace Dajjsand.Factories.LevelConfigFactory
 
         public LevelConfig GetLevelConfig(int levelIndex)
         {
-            bool isValueGot = _levelsConfigs.TryGetValue(levelIndex, out LevelConfig levelConfig);
+            int levelNumber = levelIndex + 1; // level indexes start from 0, level numbers start from 1
+            bool isValueGot = _levelsConfigs.TryGetValue(levelNumber, out LevelConfig levelConfig);
             if (!isValueGot)
-                Debug.LogError($"Level config for level {levelIndex} doesn't found!");
+                Debug.LogError($"Level config for level {levelNumber} doesn't found!");
             return levelConfig;
         }
 
@@ -38,11 +39,10 @@ namespace Dajjsand.Factories.LevelConfigFactory
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
                 _levelsConfigs = new Dictionary<int, LevelConfig>();
-                for (int index = 0; index < handle.Result.Count; index++)
+                foreach (LevelConfig config in handle.Result)
                 {
-                    LevelConfig config = handle.Result[index];
-                    _levelsConfigs.Add(index, config);
-                    Debug.Log($"Loaded Level config for level {config._levelName}");
+                    _levelsConfigs.Add(config._levelNumber, config);
+                    Debug.Log($"Loaded Level config for level {config._levelNumber}");
                 }
 
                 IsLoaded = true;
