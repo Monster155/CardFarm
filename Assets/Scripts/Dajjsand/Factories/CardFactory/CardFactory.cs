@@ -1,9 +1,9 @@
 using System;
 using Dajjsand.Controllers.Loading;
-using Dajjsand.DataAndModel.Cards;
 using Dajjsand.Handlers;
 using Dajjsand.Utils;
 using Dajjsand.Utils.Constants;
+using Dajjsand.View.Game.Cards;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Pool;

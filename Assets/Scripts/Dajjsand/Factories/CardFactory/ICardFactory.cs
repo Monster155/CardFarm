@@ -1,4 +1,4 @@
-﻿using Dajjsand.DataAndModel.Cards;
+﻿using Dajjsand.View.Game.Cards;
 
 namespace Dajjsand.Factories.CardFactory
 {

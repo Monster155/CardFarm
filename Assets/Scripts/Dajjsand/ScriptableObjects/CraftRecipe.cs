@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
+using Dajjsand.Enums;
 using UnityEngine;
 
-namespace Dajjsand.DataAndModel.Receipts
+namespace Dajjsand.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "NewCraftRecipe", menuName = "Custom/Craft Recipe")]
     public class CraftRecipe : ScriptableObject

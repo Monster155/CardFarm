@@ -1,4 +1,4 @@
-﻿namespace Dajjsand.DataAndModel.Receipts
+﻿namespace Dajjsand.Controllers.Craft
 {
     public class CraftController
     {

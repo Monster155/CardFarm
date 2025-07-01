@@ -1,4 +1,4 @@
-﻿namespace Dajjsand.DataAndModel.Receipts
+﻿namespace Dajjsand.Enums
 {
     public enum CraftIngredient
     {

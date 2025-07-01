@@ -1,4 +1,4 @@
-﻿using Dajjsand.DataAndModel;
+﻿using Dajjsand.ScriptableObjects;
 
 namespace Dajjsand.Factories.LevelConfigFactory
 {

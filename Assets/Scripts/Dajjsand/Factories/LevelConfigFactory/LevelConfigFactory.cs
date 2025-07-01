@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dajjsand.Controllers.Loading;
-using Dajjsand.DataAndModel;
+using Dajjsand.ScriptableObjects;
 using Dajjsand.Utils.Constants;
 using UnityEngine;
 using UnityEngine.AddressableAssets;

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Dajjsand.DataAndModel.Cards
+namespace Dajjsand.View.Game.Cards
 {
     public class BaseCard : MonoBehaviour
     {

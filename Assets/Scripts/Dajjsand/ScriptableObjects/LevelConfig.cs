@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using Dajjsand.DataAndModel.Receipts;
 using UnityEngine;
 
-namespace Dajjsand.DataAndModel
+namespace Dajjsand.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "LevelConfig 1", menuName = "Custom/Level Config")]
     public class LevelConfig : ScriptableObject
