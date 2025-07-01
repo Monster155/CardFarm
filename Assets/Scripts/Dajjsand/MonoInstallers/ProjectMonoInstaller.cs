@@ -1,7 +1,7 @@
-﻿using Dajjsand.Controllers.Game.Controllers.Loading;
-using Dajjsand.Controllers.Game.Factories.LevelConfigFactory;
-using Dajjsand.Controllers.Game.Handlers.SceneLoad;
-using Dajjsand.Controllers.Game.Managers.Save;
+﻿using Dajjsand.Controllers.Loading;
+using Dajjsand.Factories.LevelConfigFactory;
+using Dajjsand.Handlers.SceneLoad;
+using Dajjsand.Managers.Save;
 using Zenject;
 
 namespace Dajjsand.MonoInstallers

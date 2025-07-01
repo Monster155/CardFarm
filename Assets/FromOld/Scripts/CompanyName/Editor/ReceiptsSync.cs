@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using CompanyName.ReceiptData;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;

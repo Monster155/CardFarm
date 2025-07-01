@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace CompanyName.Field.Card
+namespace FromOld.Scripts.CompanyName.Field.Card
 {
     public class CardPhysicsController : MonoBehaviour
     {

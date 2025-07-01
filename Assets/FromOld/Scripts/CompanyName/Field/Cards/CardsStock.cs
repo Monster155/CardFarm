@@ -1,7 +1,7 @@
-﻿using CompanyName.Field.Card;
+﻿using FromOld.Scripts.CompanyName.Field.Card;
 using UnityEngine;
 
-namespace CompanyName.Field.Cards
+namespace FromOld.Scripts.CompanyName.Field.Cards
 {
     public class CardsStock : MonoBehaviour
     {

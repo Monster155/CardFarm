@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Timers;
-using CompanyName.Factories;
-using CompanyName.Field.Card;
-using CompanyName.ReceiptData;
+using FromOld.Scripts.CompanyName.Factories;
+using FromOld.Scripts.CompanyName.Field.Card;
+using FromOld.Scripts.CompanyName.ReceiptData;
 using UnityEngine;
 
-namespace CompanyName.Field.Cards
+namespace FromOld.Scripts.CompanyName.Field.Cards
 {
     public class CardsController : MonoBehaviour
     {

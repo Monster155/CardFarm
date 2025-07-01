@@ -1,10 +1,11 @@
-﻿using Dajjsand.Controllers.Game;
-using Dajjsand.Controllers.Game.Controllers.Loading;
-using Dajjsand.Controllers.Game.Factories.CardFactory;
-using Dajjsand.Controllers.Game.Factories.LevelConfigFactory;
-using Dajjsand.Controllers.Game.Handlers.SceneLoad;
-using Dajjsand.Controllers.Game.Managers.Save;
-using Dajjsand.Controllers.Game.Utils;
+﻿using Dajjsand.Controllers.Loading;
+using Dajjsand.Factories.CardFactory;
+using Dajjsand.Factories.LevelConfigFactory;
+using Dajjsand.Handlers;
+using Dajjsand.Handlers.SceneLoad;
+using Dajjsand.Managers.Game;
+using Dajjsand.Managers.Save;
+using Dajjsand.Utils;
 using UnityEngine;
 using Zenject;
 

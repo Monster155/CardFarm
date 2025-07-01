@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Text;
-using Dajjsand.Controllers.Game.Controllers.Loading;
 using TMPro;
 using UnityEngine;
 using Zenject;

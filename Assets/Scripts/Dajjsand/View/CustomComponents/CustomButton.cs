@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Progression;
+using Dajjsand.Utils.Audio;
 
 #if UNITY_EDITOR
 using UnityEditor;

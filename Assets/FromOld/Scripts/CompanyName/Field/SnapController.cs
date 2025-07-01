@@ -1,7 +1,7 @@
-using CompanyName.Field.Card;
+using FromOld.Scripts.CompanyName.Field.Card;
 using UnityEngine;
 
-namespace CompanyName.Field
+namespace FromOld.Scripts.CompanyName.Field
 {
     public class SnapController : MonoBehaviour
     {

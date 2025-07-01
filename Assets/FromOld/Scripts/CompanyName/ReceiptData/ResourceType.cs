@@ -1,4 +1,4 @@
-﻿namespace CompanyName.ReceiptData
+﻿namespace FromOld.Scripts.CompanyName.ReceiptData
 {
     public enum ResourceType
     {

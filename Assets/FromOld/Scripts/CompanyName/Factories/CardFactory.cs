@@ -1,8 +1,8 @@
 ﻿using AYellowpaper.SerializedCollections;
-using CompanyName.ReceiptData;
+using FromOld.Scripts.CompanyName.ReceiptData;
 using UnityEngine;
 
-namespace CompanyName.Factories
+namespace FromOld.Scripts.CompanyName.Factories
 {
     public class CardFactory : MonoBehaviour
     {

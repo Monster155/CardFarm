@@ -1,9 +1,9 @@
 ﻿using System;
-using CompanyName.Factories;
-using CompanyName.ReceiptData;
+using FromOld.Scripts.CompanyName.Factories;
+using FromOld.Scripts.CompanyName.ReceiptData;
 using UnityEngine;
 
-namespace CompanyName.Field.Card
+namespace FromOld.Scripts.CompanyName.Field.Card
 {
     public class NewCardView : MonoBehaviour
     {

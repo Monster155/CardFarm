@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace CompanyName.Field.Card
+namespace FromOld.Scripts.CompanyName.Field.Card
 {
     public class CardDrag : MonoBehaviour
     {

@@ -1,5 +1,4 @@
-﻿using Dajjsand.Controllers.Game.Controllers.Loading;
-using Dajjsand.Controllers.Game.Handlers.SceneLoad;
+﻿using Dajjsand.Controllers.Loading;
 using Dajjsand.View.Menu;
 using Tymski;
 using UnityEngine;

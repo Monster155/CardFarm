@@ -1,8 +1,8 @@
 ﻿using System;
-using CompanyName.ReceiptData;
+using FromOld.Scripts.CompanyName.ReceiptData;
 using UnityEngine;
 
-namespace CompanyName.Field.Card
+namespace FromOld.Scripts.CompanyName.Field.Card
 {
     public class CardView : MonoBehaviour
     {
