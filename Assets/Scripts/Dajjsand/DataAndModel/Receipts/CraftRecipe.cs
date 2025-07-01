@@ -1,16 +1,25 @@
-﻿using AYellowpaper.SerializedCollections;
+﻿using System;
+using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
 
 namespace Dajjsand.DataAndModel.Receipts
 {
-    [CreateAssetMenu(fileName = "NewCraftRecipe", menuName = "CardFarm/Craft Recipe")]
+    [CreateAssetMenu(fileName = "NewCraftRecipe", menuName = "Custom/Craft Recipe")]
     public class CraftRecipe : ScriptableObject
     {
-        [SerializedDictionary("CraftIngredient", "Count")]
-        public SerializedDictionary<CraftIngredient, int> _ingredients = new();
-        public string _result;
+        [SerializedDictionary("CraftIngredient", "Count, Doesn't disappear")]
+        public SerializedDictionary<CraftIngredient, IngredientData> _ingredients = new();
+        public List<CraftIngredient> _result;
         public float _craftTime = 10f;
         [Range(0f, 100f)]
         public float _dropChance = 100f;
+        
+        [Serializable]
+        public class IngredientData
+        {
+            public int Count;
+            public bool NotDisappears;
+        }
     }
 }
