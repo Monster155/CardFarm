@@ -6,7 +6,7 @@ namespace Dajjsand.Factories.CardFactory
 {
     public interface ICardFactory : ILoadable
     {
-        public BaseCard GetCard(CraftIngredient ingredient);
+        public BaseCard GetCard(CraftIngredientType ingredientType);
         public bool ReleaseCard(BaseCard card);
     }
 }

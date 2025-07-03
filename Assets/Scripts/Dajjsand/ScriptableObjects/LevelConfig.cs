@@ -9,6 +9,6 @@ namespace Dajjsand.ScriptableObjects
     {
         public int _levelNumber;
         public List<CraftRecipe> _availableRecipes = new();
-        public List<CraftIngredient> _startIngredients = new();
+        public List<CraftIngredientType> _startIngredients = new();
     }
 }

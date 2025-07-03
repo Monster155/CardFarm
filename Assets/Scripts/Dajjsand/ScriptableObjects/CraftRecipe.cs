@@ -9,18 +9,11 @@ namespace Dajjsand.ScriptableObjects
     [CreateAssetMenu(fileName = "NewCraftRecipe", menuName = "Custom/Craft Recipe")]
     public class CraftRecipe : ScriptableObject
     {
-        [SerializedDictionary("CraftIngredient", "Count, Doesn't disappear")]
-        public SerializedDictionary<CraftIngredient, IngredientData> _ingredients = new();
-        public List<CraftIngredient> _result;
+        [SerializedDictionary("CraftIngredient", "Count")]
+        public SerializedDictionary<CraftIngredientType, int> _ingredients = new();
+        public List<CraftIngredientType> _result;
         public float _craftTime = 10f;
         [Range(0f, 100f)]
         public float _dropChance = 100f;
-        
-        [Serializable]
-        public class IngredientData
-        {
-            public int Count;
-            public bool NotDisappears;
-        }
     }
 }

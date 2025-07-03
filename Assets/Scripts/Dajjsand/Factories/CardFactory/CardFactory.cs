@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using Dajjsand.Controllers.Loading;
 using Dajjsand.Enums;
 using Dajjsand.Handlers;
+using Dajjsand.ScriptableObjects;
 using Dajjsand.Utils;
 using Dajjsand.Utils.Constants;
 using Dajjsand.View.Game.Cards;
@@ -21,29 +24,40 @@ namespace Dajjsand.Factories.CardFactory
 
         private ObjectPool<BaseCard> _cardPool;
         private AsyncOperationHandle<GameObject> _cardPrefabLoadingHandle;
+        private AsyncOperationHandle<IngredientsTextures> _cardTexturesLoadingHandle;
         private BaseCard _baseCardPrefab;
 
         private ContainersHandler _containersHandler;
+
+        private bool _isCardPrefabsLoaded;
+        private bool _isTexturesLoaded;
+
+        private SerializedDictionary<CraftIngredientType, Texture> _ingredientToTexture;
 
         public CardFactory(ContainersHandler containersHandler)
         {
             _containersHandler = containersHandler;
 
             _cardPool = new ObjectPool<BaseCard>(CreateCard);
+
             _cardPrefabLoadingHandle = Addressables.LoadAssetAsync<GameObject>(AddressablePathConstants.BaseCardPrefab);
             _cardPrefabLoadingHandle.Completed += OnCardLoadingComplete;
+
+            _cardTexturesLoadingHandle = Addressables.LoadAssetAsync<IngredientsTextures>(AddressablePathConstants.CardTextures);
+            _cardTexturesLoadingHandle.Completed += OnTexturesLoadingComplete;
         }
 
         ~CardFactory()
         {
             _cardPool.Dispose();
             _cardPrefabLoadingHandle.Completed -= OnCardLoadingComplete;
+            _cardTexturesLoadingHandle.Completed -= OnTexturesLoadingComplete;
         }
 
-        public BaseCard GetCard(CraftIngredient ingredient)
+        public BaseCard GetCard(CraftIngredientType ingredientType)
         {
             var card = _cardPool.Get();
-            card.Init(ingredient);
+            card.Init(ingredientType, _ingredientToTexture[ingredientType]);
             return card;
         }
 
@@ -70,8 +84,28 @@ namespace Dajjsand.Factories.CardFactory
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
                 _baseCardPrefab = handle.Result.GetComponent<BaseCard>();
-                IsLoaded = true;
-                OnLoadComplete?.Invoke();
+
+                _isCardPrefabsLoaded = true;
+                if (_isTexturesLoaded && _isCardPrefabsLoaded)
+                {
+                    IsLoaded = true;
+                    OnLoadComplete?.Invoke();
+                }
+            }
+        }
+
+        private void OnTexturesLoadingComplete(AsyncOperationHandle<IngredientsTextures> handle)
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                _ingredientToTexture = handle.Result._ingredientToTexture;
+
+                _isTexturesLoaded = true;
+                if (_isTexturesLoaded && _isCardPrefabsLoaded)
+                {
+                    IsLoaded = true;
+                    OnLoadComplete?.Invoke();
+                }
             }
         }
     }

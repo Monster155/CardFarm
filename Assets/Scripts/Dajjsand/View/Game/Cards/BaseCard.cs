@@ -5,11 +5,22 @@ namespace Dajjsand.View.Game.Cards
 {
     public class BaseCard : MonoBehaviour
     {
-        private CraftIngredient _ingredient;
+        [SerializeField] private Renderer _renderer;
+        [SerializeField] private int _numberOfRemainingUses = 1;
 
-        public void Init(CraftIngredient ingredient)
+        private CraftIngredientType _ingredientType;
+
+        public void Init(CraftIngredientType ingredientType, Texture texture)
         {
-            _ingredient = ingredient;
+            _ingredientType = ingredientType;
+            _renderer.material.mainTexture = texture;
+        }
+
+        public virtual void Used()
+        {
+            _numberOfRemainingUses--;
+            if (_numberOfRemainingUses <= 0)
+                Destroy(gameObject);
         }
     }
 }

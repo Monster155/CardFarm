@@ -36,7 +36,7 @@ namespace Dajjsand.Managers.Game
         {
             _currentLevelConfig = _levelConfigFactory.GetLevelConfig(_saveManager.GetCurrentLevelIndex());
 
-            foreach (CraftIngredient ingredient in _currentLevelConfig._startIngredients)
+            foreach (CraftIngredientType ingredient in _currentLevelConfig._startIngredients)
             {
                 var card = _cardFactory.GetCard(ingredient);
             }

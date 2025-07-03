@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5fca8f556c94b6eb34c1e2a57e4b348, type: 3}
-  m_Name: Brick_CraftRecipe
+  m_Name: Wheat_CraftRecipe
   m_EditorClassIdentifier: 
   _ingredients:
     _serializedList:
@@ -20,8 +20,8 @@ MonoBehaviour:
         NotDisappears: 1
     - Key: 1
       Value:
-        Count: 3
-        NotDisappears: 0
-  _result: 04000000
+        Count: 1
+        NotDisappears: 1
+  _result: 02000000
   _craftTime: 10
   _dropChance: 100
