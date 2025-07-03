@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using Dajjsand.Enums;
+using Dajjsand.Models.Task;
 using UnityEngine;
 
 namespace Dajjsand.ScriptableObjects
@@ -12,5 +13,6 @@ namespace Dajjsand.ScriptableObjects
         public List<CraftRecipe> _availableRecipes = new();
         [SerializedDictionary("CraftIngredient", "Count")]
         public SerializedDictionary<CardType, int> _startIngredients = new();
+        public Tasks _tasksToCompleteLevel;
     }
 }

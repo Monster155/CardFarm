@@ -21,3 +21,8 @@ MonoBehaviour:
       Value: 1
     - Key: 1
       Value: 1
+  _tasksToCompleteLevel:
+    _tasks: []
+  references:
+    version: 2
+    RefIds: []
