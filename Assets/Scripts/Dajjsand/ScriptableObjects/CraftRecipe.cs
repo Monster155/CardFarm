@@ -10,8 +10,8 @@ namespace Dajjsand.ScriptableObjects
     public class CraftRecipe : ScriptableObject
     {
         [SerializedDictionary("CraftIngredient", "Count")]
-        public SerializedDictionary<CraftIngredientType, int> _ingredients = new();
-        public List<CraftIngredientType> _result;
+        public SerializedDictionary<CardType, int> _ingredients = new();
+        public List<CardType> _result;
         public float _craftTime = 10f;
         [Range(0f, 100f)]
         public float _dropChance = 100f;

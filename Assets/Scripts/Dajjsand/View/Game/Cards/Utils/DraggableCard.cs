@@ -1,19 +1,26 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
+using System.Collections;
 
 namespace Dajjsand.View.Game.Cards.Utils
 {
+    [RequireComponent(typeof(BoxCollider), typeof(Rigidbody))]
     public class DraggableCard : MonoBehaviour
     {
         [Header("Drag Settings")]
         [SerializeField] private float _hoverHeight = 0.2f;
         [SerializeField] private LayerMask _cardLayer;
+        [SerializeField] private LayerMask _mapLayer;
         [SerializeField] private float _mergeDistance = 0.5f;
+        [SerializeField] private float _repelForce = 3f;
+        [SerializeField] private float _repelDuration = 0.2f;
+        [SerializeField] private float _repelBoxPadding = 0.05f;
+        [Header("Links")]
+        [SerializeField] private BaseCard _baseCard;
+
+        public bool IsDragging { get; private set; } = false;
 
         private Rigidbody _rigidbody;
-        private Vector3 _originalPosition;
-        private Quaternion _originalRotation;
-        private bool _isDragging = false;
         private Camera _mainCamera;
         private DraggableCard _highlightedTarget;
 
@@ -35,22 +42,26 @@ namespace Dajjsand.View.Game.Cards.Utils
 
         private void OnMouseDown()
         {
-            _originalPosition = transform.position;
-            _originalRotation = transform.rotation;
-
-            _isDragging = true;
+            if(_baseCard.IsDraggingLocked)
+                return;
+            
+            IsDragging = true;
             _rigidbody.useGravity = false;
-            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.linearVelocity = Vector3.zero;
             transform.position += Vector3.up * _hoverHeight;
+            transform.rotation = Quaternion.identity;
         }
 
         private void OnMouseDrag()
         {
+            if(_baseCard.IsDraggingLocked)
+                return;
+            
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hitInfo, 100f, ~0))
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 100f, _mapLayer))
             {
                 Vector3 targetPosition = hitInfo.point;
-                targetPosition.y = _originalPosition.y + _hoverHeight;
+                targetPosition.y += _hoverHeight;
                 transform.position = targetPosition;
 
                 CheckForMergeTarget();
@@ -59,8 +70,12 @@ namespace Dajjsand.View.Game.Cards.Utils
 
         private void OnMouseUp()
         {
-            _isDragging = false;
+            // if locked on move
+            IsDragging = false;
             _rigidbody.useGravity = true;
+            
+            if(_baseCard.IsDraggingLocked)
+                return;
 
             if (_highlightedTarget != null)
             {
@@ -69,9 +84,8 @@ namespace Dajjsand.View.Game.Cards.Utils
             }
             else
             {
-                // Плавно возвращаемся на исходную позицию
-                transform.position = _originalPosition;
-                transform.rotation = _originalRotation;
+                // Оставляем карточку на месте
+                StartCoroutine(RepelFromOverlappingCards());
             }
 
             OnUnhighlightForMerge?.Invoke(_highlightedTarget);
@@ -111,5 +125,43 @@ namespace Dajjsand.View.Game.Cards.Utils
                     OnHighlightForMerge?.Invoke(_highlightedTarget);
             }
         }
+
+        private IEnumerator RepelFromOverlappingCards()
+        {
+            BoxCollider myCollider = GetComponent<BoxCollider>();
+            Vector3 halfExtents = myCollider.size * 0.5f * transform.localScale.x + Vector3.one * _repelBoxPadding;
+
+            Collider[] overlaps = Physics.OverlapBox(transform.position, halfExtents, transform.rotation, _cardLayer);
+
+            foreach (var col in overlaps)
+            {
+                if (col.gameObject == this.gameObject) continue;
+
+                Vector3 direction = (transform.position - col.transform.position).normalized;
+                direction.y = 0;
+
+                if (direction == Vector3.zero)
+                    direction = new Vector3(UnityEngine.Random.value, 0, UnityEngine.Random.value).normalized;
+
+                _rigidbody.AddForce(direction * _repelForce, ForceMode.Impulse);
+            }
+
+            yield return new WaitForSeconds(_repelDuration);
+
+            _rigidbody.linearVelocity = Vector3.zero;
+        }
+
+#if UNITY_EDITOR
+        // Для наглядности в редакторе
+        private void OnDrawGizmosSelected()
+        {
+            if (!TryGetComponent(out BoxCollider col)) return;
+
+            Gizmos.color = Color.cyan;
+            Vector3 halfExtents = col.size * 0.5f * transform.localScale.x + Vector3.one * _repelBoxPadding;
+            Gizmos.matrix = transform.localToWorldMatrix;
+            Gizmos.DrawWireCube(Vector3.zero, halfExtents * 2);
+        }
+#endif
     }
 }

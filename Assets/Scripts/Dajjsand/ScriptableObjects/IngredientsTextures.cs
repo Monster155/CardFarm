@@ -8,6 +8,6 @@ namespace Dajjsand.ScriptableObjects
     public class IngredientsTextures : ScriptableObject
     {
         [SerializedDictionary("Ingredient", "Texture")]
-        public SerializedDictionary<CraftIngredientType, Texture> _ingredientToTexture = new();
+        public SerializedDictionary<CardType, Texture> _ingredientToTexture = new();
     }
 }

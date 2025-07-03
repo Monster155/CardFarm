@@ -1,9 +1,13 @@
-﻿using Dajjsand.Controllers.GameLoading;
+﻿using System.Collections.Generic;
+using Dajjsand.Controllers.Craft;
+using Dajjsand.Controllers.GameLoading;
 using Dajjsand.Enums;
 using Dajjsand.Factories.CardFactory;
 using Dajjsand.Factories.LevelConfigFactory;
 using Dajjsand.Managers.Save;
 using Dajjsand.ScriptableObjects;
+using Dajjsand.View.Game.Cards;
+using UnityEngine;
 
 namespace Dajjsand.Managers.Game
 {
@@ -15,6 +19,8 @@ namespace Dajjsand.Managers.Game
         private ISaveManager _saveManager;
 
         private LevelConfig _currentLevelConfig;
+
+        private List<BaseCard> _spawnedFromStarterPackCards = new();
 
         public GameManager(ILoadController loadController, ICardFactory cardFactory,
             ILevelConfigFactory levelConfigFactory, ISaveManager saveManager)
@@ -36,9 +42,29 @@ namespace Dajjsand.Managers.Game
         {
             _currentLevelConfig = _levelConfigFactory.GetLevelConfig(_saveManager.GetCurrentLevelIndex());
 
-            foreach (CraftIngredientType ingredient in _currentLevelConfig._startIngredients)
+            // initiating singleton
+            CraftController craftController = new CraftController(_currentLevelConfig._availableRecipes);
+
+            var card = _cardFactory.GetStarterPack(_currentLevelConfig._startIngredients);
+            card.IsDraggingLocked = true;
+            card.OnClick += PackCard_OnClick;
+        }
+
+        private void PackCard_OnClick(BaseCard packCard)
+        {
+            CardType? card = packCard.GetCardFromContainer();
+            if (card != null)
             {
-                var card = _cardFactory.GetCard(ingredient);
+                var newCard = _cardFactory.GetCard((CardType)card, packCard.transform.position + new Vector3(0.2f, 0, 0.2f));
+                newCard.IsDraggingLocked = true;
+                _spawnedFromStarterPackCards.Add(newCard);
+            }
+
+            if (!packCard.IsAnyCardInContainer())
+            {
+                _cardFactory.ReleaseCard(packCard);
+                foreach (BaseCard newCard in _spawnedFromStarterPackCards)
+                    newCard.IsDraggingLocked = false;
             }
         }
     }

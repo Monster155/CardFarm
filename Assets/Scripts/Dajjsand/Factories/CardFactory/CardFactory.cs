@@ -32,7 +32,7 @@ namespace Dajjsand.Factories.CardFactory
         private bool _isCardPrefabsLoaded;
         private bool _isTexturesLoaded;
 
-        private SerializedDictionary<CraftIngredientType, Texture> _ingredientToTexture;
+        private SerializedDictionary<CardType, Texture> _ingredientToTexture;
 
         public CardFactory(ContainersHandler containersHandler)
         {
@@ -54,17 +54,29 @@ namespace Dajjsand.Factories.CardFactory
             _cardTexturesLoadingHandle.Completed -= OnTexturesLoadingComplete;
         }
 
-        public BaseCard GetCard(CraftIngredientType ingredientType)
+        public BaseCard GetCard(CardType ingredientType, Vector3 pos)
         {
             var card = _cardPool.Get();
+            card.gameObject.SetActive(true);
             card.Init(ingredientType, _ingredientToTexture[ingredientType]);
+            card.name = ingredientType.ToString();
+            card.transform.position = pos;
             return card;
         }
 
         public bool ReleaseCard(BaseCard card)
         {
+            card.transform.position = new Vector3(0f, -100f, 0f);
+            card.gameObject.SetActive(false);
             _cardPool.Release(card);
             return true;
+        }
+
+        public BaseCard GetStarterPack(Dictionary<CardType, int> ingredients)
+        {
+            var pack = GetCard(CardType.Pack, new Vector3(0f, 0.2f, 0f));
+            pack.SetIngredients(ingredients);
+            return pack;
         }
 
         private BaseCard CreateCard()
