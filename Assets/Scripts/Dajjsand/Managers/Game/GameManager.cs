@@ -46,7 +46,7 @@ namespace Dajjsand.Managers.Game
             CraftController craftController = new CraftController(_currentLevelConfig._availableRecipes);
 
             var card = _cardFactory.GetStarterPack(_currentLevelConfig._startIngredients);
-            card.IsDraggingLocked = true;
+            card.SetDraggingLockedState(true);
             card.OnClick += PackCard_OnClick;
         }
 
@@ -56,7 +56,7 @@ namespace Dajjsand.Managers.Game
             if (card != null)
             {
                 var newCard = _cardFactory.GetCard((CardType)card, packCard.transform.position + new Vector3(0.2f, 0, 0.2f));
-                newCard.IsDraggingLocked = true;
+                newCard.SetDraggingLockedState(true);
                 _spawnedFromStarterPackCards.Add(newCard);
             }
 
@@ -64,7 +64,7 @@ namespace Dajjsand.Managers.Game
             {
                 _cardFactory.ReleaseCard(packCard);
                 foreach (BaseCard newCard in _spawnedFromStarterPackCards)
-                    newCard.IsDraggingLocked = false;
+                    newCard.SetDraggingLockedState(false);
             }
         }
     }

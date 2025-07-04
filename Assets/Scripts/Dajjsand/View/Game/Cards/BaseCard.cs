@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Dajjsand.Controllers.Craft;
 using Dajjsand.Enums;
 using Dajjsand.ScriptableObjects;
+using ModestTree;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Dajjsand.View.Game.Cards
 {
@@ -12,59 +16,87 @@ namespace Dajjsand.View.Game.Cards
         public event Action<BaseCard> OnClick;
 
         [SerializeField] private Renderer _renderer;
-        [SerializeField, ReadOnly] private int _numberOfRemainingUses;
+        [SerializeField] private MergeBar _mergeBar;
+        [SerializeField] private Transform _childContainer;
+        [SerializeField] private DraggableCard _draggableCard;
 
-        public CardType IngredientType { get; private set; }
-        public bool IsDraggingLocked { get; set; }
+        private Transform _cardsContainer;
+        private CardLogic _cardLogic;
+        private Coroutine _mergeCoroutine;
 
-        private CardData _cardData;
-        private Dictionary<CardType, int> _cardsInside;
-
-        public void Init(CardData cardData)
+        public void Init(CardData cardData, Transform cardsContainer)
         {
-            _cardData = cardData;
+            _cardsContainer = cardsContainer;
+            _cardLogic = new CardLogic(cardData, this);
 
-            IngredientType = _cardData._cardType;
-            _renderer.material.mainTexture = _cardData._cardTexture;
-            _numberOfRemainingUses = _cardData._numberOfUses;
+            _renderer.material.mainTexture = cardData._cardTexture;
 
-            _cardsInside = new();
+            _draggableCard.Init(_cardLogic);
+
+            _cardLogic.OnUsesCountEnd += () => Destroy(gameObject);
+            _cardLogic.OnParentChanged += CardLogic_OnParentChanged;
         }
 
-        public virtual void Used()
-        {
-            if (_numberOfRemainingUses < 0)
-                return;
+        public void Used() =>
+            _cardLogic.Used();
 
-            _numberOfRemainingUses--;
-            if (_numberOfRemainingUses == 0)
-                Destroy(gameObject);
-        }
+        public void SetIngredients(Dictionary<CardType, int> ingredients) =>
+            _cardLogic.SetCardToContainer(ingredients);
 
-        public void SetIngredients(Dictionary<CardType, int> ingredients)
-        {
-            _cardsInside = ingredients;
-        }
+        public CardType? GetCardFromContainer() =>
+            _cardLogic.GetCardFromContainer();
 
-        public CardType? GetCardFromContainer()
+        public bool IsAnyCardInContainer() =>
+            _cardLogic.IsAnyCardInContainer();
+
+        #region Dragging
+
+        private void OnMouseDown() => _draggableCard.MouseDown();
+        private void OnMouseDrag() => _draggableCard.MouseDrag();
+        private void OnMouseUp() => _draggableCard.MouseUp();
+
+        #endregion
+
+        private void CardLogic_OnParentChanged(BaseCard parentCard)
         {
-            foreach (CardType card in _cardsInside.Keys)
+            if (parentCard == null)
             {
-                if (_cardsInside[card] > 0)
-                {
-                    _cardsInside[card]--;
-                    if (_cardsInside[card] == 0)
-                        _cardsInside.Remove(card);
+                transform.parent = _cardsContainer;
+            }
+            else
+            {
+                transform.parent = parentCard._childContainer;
+                transform.localPosition = Vector3.zero;
+            }
+        }
 
-                    return card;
-                }
+        public void StopMergeTimer()
+        {
+            if (_mergeCoroutine != null)
+                StopCoroutine(_mergeCoroutine);
+            _mergeBar.StopMerge();
+        }
+
+        private IEnumerator MergeTimer(Action<float> callback, float duration)
+        {
+            _mergeBar.StartMerge();
+            float timer = 0f;
+            while (timer < duration)
+            {
+                timer -= Time.deltaTime;
+                yield return null;
+
+                callback?.Invoke(timer / duration);
+                _mergeBar.UpdateProgress(timer / duration);
             }
 
-            return null;
+            _mergeBar.FinishMerge();
         }
 
-        public bool IsAnyCardInContainer() => _cardsInside.Count > 0;
-
         private void OnMouseUpAsButton() => OnClick?.Invoke(this);
+
+        public void SetDraggingLockedState(bool isLocked)
+        {
+        }
     }
 }

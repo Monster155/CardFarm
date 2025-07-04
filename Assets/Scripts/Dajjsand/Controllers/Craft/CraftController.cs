@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Dajjsand.Enums;
 using Dajjsand.ScriptableObjects;
+using Dajjsand.View.Game.Cards;
 using UnityEngine;
 
 namespace Dajjsand.Controllers.Craft
@@ -55,38 +57,43 @@ namespace Dajjsand.Controllers.Craft
             return false;
         }
 
-        // public bool TryCraft(List<string> inputResources, out string result)
+        // public List<CraftRecipe> GetRecipesForStock(BaseCard headCard)
         // {
-        //     foreach (var recipe in _currentLevelRecipes.availableRecipes)
+        //     if (!_recipeDictionary.TryGetValue(headCard.Type, out var recipes))
+        //         return null;
+        //
+        //     HashSet<CraftRecipe> set = new HashSet<CraftRecipe>(recipes);
+        //
+        //     var card = headCard;
+        //     while (card.Child != null)
         //     {
-        //         if (RecipeMatches(recipe, inputResources))
-        //         {
-        //             result = recipe.result;
-        //             return true;
-        //         }
+        //         card = card.Child;
+        //         if (!_recipeDictionary.TryGetValue(card.Type, out var recipesChild))
+        //             return null;
+        //
+        //         set.RemoveWhere(recipe => !recipesChild.Contains(recipe));
         //     }
         //
-        //     result = null;
-        //     return false;
+        //     return set.ToList();
         // }
         //
-        // private bool RecipeMatches(CraftRecipe recipe, List<string> inputResources)
+        // public bool TryToStartMerge(Dictionary<CardType, int> ingredients)
         // {
-        //     var required = recipe.ingredients
-        //         .GroupBy(i => i.resourceName)
-        //         .ToDictionary(g => g.Key, g => g.Sum(i => i.amount));
+        //     var recipes = GetRecipesForStock(headCard);
+        //     
+        //     if(recipes == null || recipes.Count == 0)
+        //         return false;
         //
-        //     var inputGrouped = inputResources
-        //         .GroupBy(r => r)
-        //         .ToDictionary(g => g.Key, g => g.Count());
-        //
-        //     foreach (var req in required)
-        //     {
-        //         if (!inputGrouped.TryGetValue(req.Key, out var inputAmount) || inputAmount < req.Value)
-        //             return false;
-        //     }
-        //
+        //     headCard.StartMergeTimer(TimerCallback, recipes[0]._craftTime);
+        //     
         //     return true;
         // }
+        //
+        // public void StopMerge(BaseCard headCard)
+        // {
+        //     headCard.StopMergeTimer();
+        // }
+        //
+        // private void TimerCallback(float percentage){}
     }
 }

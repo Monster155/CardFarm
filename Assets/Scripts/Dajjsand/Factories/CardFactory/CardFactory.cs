@@ -59,7 +59,7 @@ namespace Dajjsand.Factories.CardFactory
             var card = _cardPool.Get();
             card.gameObject.SetActive(true);
             
-            card.Init(_cards[cardType]);
+            card.Init(_cards[cardType], _containersHandler.CardsContainer);
             card.name = cardType.ToString();
             card.transform.position = pos;
             
