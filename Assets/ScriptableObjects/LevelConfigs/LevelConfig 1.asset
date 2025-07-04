@@ -22,7 +22,16 @@ MonoBehaviour:
     - Key: 1
       Value: 1
   _tasksToCompleteLevel:
-    _tasks: []
+    _tasks:
+    - rid: 8577952213431484416
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 8577952213431484416
+      type: {class: GetCardsTask, ns: Dajjsand.Models.Task, asm: Assembly-CSharp}
+      data:
+        _taskName: Earn 10 coins
+        _requiredCards:
+          _serializedList:
+          - Key: 3
+            Value: 10

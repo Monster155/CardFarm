@@ -8,7 +8,7 @@ namespace Dajjsand.Factories.CardFactory
 {
     public interface ICardFactory : ILoadable
     {
-        public BaseCard GetCard(CardType ingredientType, Vector3 pos);
+        public BaseCard GetCard(CardType cardType, Vector3 pos);
         public bool ReleaseCard(BaseCard card);
         BaseCard GetStarterPack(Dictionary<CardType, int> ingredients);
     }
