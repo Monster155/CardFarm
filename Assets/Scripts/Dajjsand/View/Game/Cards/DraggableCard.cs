@@ -13,6 +13,7 @@ namespace Dajjsand.View.Game.Cards
         [SerializeField] private float _pushAmount = 1f;
         [field: SerializeField] public Rigidbody Rigidbody { get; private set; }
 
+        public bool IsDraggingLocked { get; set; } = false;
         public bool IsDragging { get; private set; } = false;
         public CardLogic Logic { get; private set; }
 
@@ -31,7 +32,7 @@ namespace Dajjsand.View.Game.Cards
 
         public void MouseDown()
         {
-            if (Logic.IsDraggingLocked)
+            if (IsDraggingLocked)
                 return;
 
             Logic.LoseChildren();
@@ -44,7 +45,7 @@ namespace Dajjsand.View.Game.Cards
 
         public void MouseDrag()
         {
-            if (Logic.IsDraggingLocked)
+            if (IsDraggingLocked)
                 return;
 
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -64,7 +65,7 @@ namespace Dajjsand.View.Game.Cards
 
             LastDragTime = Time.time;
 
-            if (Logic.IsDraggingLocked)
+            if (IsDraggingLocked)
                 return;
 
             // do smth

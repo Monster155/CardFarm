@@ -30,8 +30,8 @@ MonoBehaviour:
     - rid: 8577952213431484416
       type: {class: GetCardsTask, ns: Dajjsand.Models.Task, asm: Assembly-CSharp}
       data:
-        _taskName: Earn 10 coins
+        _taskName: Earn 3 wheats
         _requiredCards:
           _serializedList:
-          - Key: 3
-            Value: 10
+          - Key: 2
+            Value: 3

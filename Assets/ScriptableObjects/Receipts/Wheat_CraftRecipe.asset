@@ -15,13 +15,9 @@ MonoBehaviour:
   _ingredients:
     _serializedList:
     - Key: 0
-      Value:
-        Count: 1
-        NotDisappears: 1
+      Value: 1
     - Key: 1
-      Value:
-        Count: 1
-        NotDisappears: 1
+      Value: 1
   _result: 02000000
   _craftTime: 10
   _dropChance: 100

@@ -29,7 +29,7 @@ namespace Dajjsand.View.Game.Cards
         public void FinishMerge()
         {
             _barImage.fillAmount = 1f;
-            DOVirtual.DelayedCall(0.2f, () => _mergeBar.SetActive(false));
+            _mergeBar.SetActive(false);
         }
 
         public void StopMerge()

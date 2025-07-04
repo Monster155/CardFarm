@@ -43,7 +43,7 @@ namespace Dajjsand.Managers.Game
             _currentLevelConfig = _levelConfigFactory.GetLevelConfig(_saveManager.GetCurrentLevelIndex());
 
             // initiating singleton
-            CraftController craftController = new CraftController(_currentLevelConfig._availableRecipes);
+            CraftController craftController = new CraftController(_currentLevelConfig._availableRecipes, _cardFactory);
 
             var card = _cardFactory.GetStarterPack(_currentLevelConfig._startIngredients);
             card.SetDraggingLockedState(true);

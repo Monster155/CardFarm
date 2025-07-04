@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using Dajjsand.Controllers.Loading;
+using Dajjsand.Controllers.Tasks;
 using Dajjsand.Enums;
 using Dajjsand.Handlers;
 using Dajjsand.ScriptableObjects;
@@ -28,15 +29,17 @@ namespace Dajjsand.Factories.CardFactory
         private BaseCard _baseCardPrefab;
 
         private ContainersHandler _containersHandler;
+        private ITasksController _tasksController;
 
         private bool _isCardPrefabsLoaded;
         private bool _isTexturesLoaded;
 
         private SerializedDictionary<CardType, CardData> _cards;
 
-        public CardFactory(ContainersHandler containersHandler)
+        public CardFactory(ContainersHandler containersHandler, ITasksController tasksController)
         {
             _containersHandler = containersHandler;
+            _tasksController = tasksController;
 
             _cardPool = new ObjectPool<BaseCard>(CreateCard);
 
@@ -58,11 +61,13 @@ namespace Dajjsand.Factories.CardFactory
         {
             var card = _cardPool.Get();
             card.gameObject.SetActive(true);
-            
+
             card.Init(_cards[cardType], _containersHandler.CardsContainer);
             card.name = cardType.ToString();
             card.transform.position = pos;
-            
+
+            // _tasksController.
+
             return card;
         }
 
@@ -90,6 +95,7 @@ namespace Dajjsand.Factories.CardFactory
             }
 
             var card = Object.Instantiate(_baseCardPrefab, _containersHandler.CardsContainer);
+            card.OnDestroy += thisCard => ReleaseCard(thisCard);
             return card;
         }
 

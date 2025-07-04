@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using Dajjsand.Controllers.Craft;
 using Dajjsand.Enums;
 using Dajjsand.ScriptableObjects;
-using ModestTree;
-using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Dajjsand.View.Game.Cards
 {
     public class BaseCard : MonoBehaviour
     {
         public event Action<BaseCard> OnClick;
+        public event Action<BaseCard> OnDestroy;
 
         [SerializeField] private Renderer _renderer;
         [SerializeField] private MergeBar _mergeBar;
@@ -21,24 +17,28 @@ namespace Dajjsand.View.Game.Cards
         [SerializeField] private DraggableCard _draggableCard;
 
         private Transform _cardsContainer;
-        private CardLogic _cardLogic;
+        private CardLogic _cardLogic = new CardLogic();
         private Coroutine _mergeCoroutine;
 
         public void Init(CardData cardData, Transform cardsContainer)
         {
             _cardsContainer = cardsContainer;
-            _cardLogic = new CardLogic(cardData, this);
+            _cardLogic.Init(cardData, this);
 
             _renderer.material.mainTexture = cardData._cardTexture;
 
             _draggableCard.Init(_cardLogic);
-
-            _cardLogic.OnUsesCountEnd += () => Destroy(gameObject);
-            _cardLogic.OnParentChanged += CardLogic_OnParentChanged;
         }
 
-        public void Used() =>
-            _cardLogic.Used();
+        private void Start()
+        {
+            _cardLogic.OnUsesCountEnd += () => OnDestroy?.Invoke(this);
+            _cardLogic.OnParentChanged += CardLogic_OnParentChanged;
+            _cardLogic.OnMergeTimerUpdate += CardLogic_OnMergeTimerUpdate;
+            _cardLogic.OnMergeTimerStart += CardLogic_OnMergeTimerStart;
+            _cardLogic.OnMergeTimerStop += CardLogic_OnMergeTimerStop;
+            _cardLogic.OnMergeTimerFinish += CardLogic_OnMergeTimerFinish;
+        }
 
         public void SetIngredients(Dictionary<CardType, int> ingredients) =>
             _cardLogic.SetCardToContainer(ingredients);
@@ -70,33 +70,13 @@ namespace Dajjsand.View.Game.Cards
             }
         }
 
-        public void StopMergeTimer()
-        {
-            if (_mergeCoroutine != null)
-                StopCoroutine(_mergeCoroutine);
-            _mergeBar.StopMerge();
-        }
-
-        private IEnumerator MergeTimer(Action<float> callback, float duration)
-        {
-            _mergeBar.StartMerge();
-            float timer = 0f;
-            while (timer < duration)
-            {
-                timer -= Time.deltaTime;
-                yield return null;
-
-                callback?.Invoke(timer / duration);
-                _mergeBar.UpdateProgress(timer / duration);
-            }
-
-            _mergeBar.FinishMerge();
-        }
+        private void CardLogic_OnMergeTimerUpdate(float percentage) => _mergeBar.UpdateProgress(percentage);
+        private void CardLogic_OnMergeTimerStart() => _mergeBar.StartMerge();
+        private void CardLogic_OnMergeTimerStop() => _mergeBar.StopMerge();
+        private void CardLogic_OnMergeTimerFinish() => _mergeBar.FinishMerge();
 
         private void OnMouseUpAsButton() => OnClick?.Invoke(this);
 
-        public void SetDraggingLockedState(bool isLocked)
-        {
-        }
+        public void SetDraggingLockedState(bool isLocked) => _draggableCard.IsDraggingLocked = isLocked;
     }
 }

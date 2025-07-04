@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Timers;
 using Dajjsand.Controllers.Craft;
 using Dajjsand.Enums;
 using Dajjsand.ScriptableObjects;
+using DG.Tweening;
 
 namespace Dajjsand.View.Game.Cards
 {
@@ -10,6 +12,10 @@ namespace Dajjsand.View.Game.Cards
     {
         public event Action OnUsesCountEnd;
         public event Action<BaseCard> OnParentChanged;
+        public event Action<float> OnMergeTimerUpdate;
+        public event Action OnMergeTimerStart;
+        public event Action OnMergeTimerStop;
+        public event Action OnMergeTimerFinish;
 
         // base data
         public CardData CardData { get; private set; }
@@ -24,15 +30,18 @@ namespace Dajjsand.View.Game.Cards
         private int _numberOfRemainingUses;
 
         // rules
-        public bool IsDraggingLocked { get; set; } = false;
         public CardType Type => CardData._cardType;
+        private Tweener _mergeTimer;
 
 
-        public CardLogic(CardData cardData, BaseCard card)
+        public void Init(CardData cardData, BaseCard card)
         {
             CardData = cardData;
+            _numberOfRemainingUses = CardData._numberOfUses;
+
             Card = card;
             HeadCard = this;
+
             _cardsInside = new();
         }
 
@@ -95,18 +104,43 @@ namespace Dajjsand.View.Game.Cards
 
             childHighestCard.OnParentChanged?.Invoke(lowestCard.Card);
 
-            // CraftController.Instance.TryToStartMerge(HeadCard);
+            StartTimer();
+        }
+
+        private void StartTimer()
+        {
+            if (CraftController.Instance.TryToStartMerge(
+                    HeadCard,
+                    percentage => OnMergeTimerUpdate?.Invoke(percentage),
+                    MergeTimerFinish,
+                    out Tweener timer))
+            {
+                OnMergeTimerStart?.Invoke();
+                _mergeTimer = timer;
+            }
+        }
+
+        private void MergeTimerFinish()
+        {
+            OnMergeTimerFinish?.Invoke();
+            StartTimer();
         }
 
         public void LoseChildren()
         {
-            // CraftController.Instance.StopMerge(HeadCard);
+            HeadCard.StopMergeTimer();
 
             if (ChildCard != null)
                 ChildCard.HeadCard = ChildCard;
             ChildCard = null;
 
             OnParentChanged?.Invoke(null);
+        }
+
+        private void StopMergeTimer()
+        {
+            _mergeTimer?.Kill();
+            OnMergeTimerStop?.Invoke();
         }
     }
 }
