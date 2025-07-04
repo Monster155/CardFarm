@@ -26,6 +26,7 @@ namespace Dajjsand.View.Game.Cards
             Logic.OnParentChanged += BaseCard_OnParentChanged;
 
             _mainCamera = Camera.main;
+            IsDraggingLocked = false;
         }
 
         #region Dragging
@@ -105,6 +106,6 @@ namespace Dajjsand.View.Game.Cards
         }
 
         private bool CanCardsBeMerged(CardType card1, CardType card2) =>
-            CraftController.Instance.CanBeMerged(card1, card2);
+            CraftController.Instance?.CanBeMerged(card1, card2) ?? false;
     }
 }

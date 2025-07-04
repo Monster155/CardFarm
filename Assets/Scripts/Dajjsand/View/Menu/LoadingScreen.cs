@@ -2,6 +2,7 @@
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Dajjsand.View.Menu
@@ -30,10 +31,9 @@ namespace Dajjsand.View.Menu
 
         public void UpdateProgress(float percent)
         {
-            Debug.Log(percent);
             _loadingMarker.sizeDelta = new Vector2(percent * _markerContainer.rect.width, _loadingMarker.sizeDelta.y);
         }
-
+        
         private IEnumerator LoadingAnimationCoroutine()
         {
             int count = 0;

@@ -1,4 +1,5 @@
 ﻿using Dajjsand.Controllers.GameLoading;
+using Dajjsand.Controllers.Tasks;
 using Dajjsand.Factories.CardFactory;
 using Dajjsand.Factories.LevelConfigFactory;
 using Dajjsand.Handlers;
@@ -23,6 +24,7 @@ namespace Dajjsand.MonoInstallers
             Container.BindInterfacesAndSelfTo<LoadController>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<LevelConfigFactory>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<SceneLoadHandler>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<TasksController>().AsSingle().NonLazy();
 
             Container.BindInstance(_containersHandler).AsSingle().NonLazy();
         }

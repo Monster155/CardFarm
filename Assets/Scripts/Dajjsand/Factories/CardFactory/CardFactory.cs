@@ -66,7 +66,7 @@ namespace Dajjsand.Factories.CardFactory
             card.name = cardType.ToString();
             card.transform.position = pos;
 
-            // _tasksController.
+            _tasksController.UpdateReceivedCards(cardType);
 
             return card;
         }
@@ -74,6 +74,7 @@ namespace Dajjsand.Factories.CardFactory
         public bool ReleaseCard(BaseCard card)
         {
             card.transform.position = new Vector3(0f, -100f, 0f);
+            card.transform.parent = _containersHandler.CardsContainer;
             card.gameObject.SetActive(false);
             _cardPool.Release(card);
             return true;
@@ -82,7 +83,7 @@ namespace Dajjsand.Factories.CardFactory
         public BaseCard GetStarterPack(Dictionary<CardType, int> ingredients)
         {
             var pack = GetCard(CardType.Pack, new Vector3(0f, 0.2f, 0f));
-            pack.SetIngredients(ingredients);
+            pack.SetIngredients(new Dictionary<CardType, int>(ingredients));
             return pack;
         }
 

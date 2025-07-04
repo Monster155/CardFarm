@@ -45,6 +45,11 @@ namespace Dajjsand.Controllers.Craft
             }
         }
 
+        public void Dispose()
+        {
+            Instance = null;
+        }
+
         public bool CanBeMerged(CardType ingredient1, CardType ingredient2)
         {
             if (_recipeDictionary.TryGetValue(ingredient1, out var recipes1)

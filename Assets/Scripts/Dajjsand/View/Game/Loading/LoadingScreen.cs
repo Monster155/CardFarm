@@ -30,20 +30,23 @@ namespace Dajjsand.View.Game.Loading
                 gameObject.SetActive(false);
                 return;
             }
-
-            _loadController.OnAllLoaded += LoadController_OnAllLoaded;
-            _loadController.OnPercentageChanged += LoadController_OnPercentageChanged;
         }
 
         private void OnEnable()
         {
             _loadingCoroutine = StartCoroutine(LoadingAnimationCoroutine());
             _loadingMarker.sizeDelta = new Vector2(0, _loadingMarker.sizeDelta.y);
+
+            _loadController.OnAllLoaded += LoadController_OnAllLoaded;
+            _loadController.OnPercentageChanged += LoadController_OnPercentageChanged;
         }
 
         private void OnDisable()
         {
             StopCoroutine(_loadingCoroutine);
+
+            _loadController.OnAllLoaded -= LoadController_OnAllLoaded;
+            _loadController.OnPercentageChanged -= LoadController_OnPercentageChanged;
         }
 
         public void UpdateProgress(float percent)

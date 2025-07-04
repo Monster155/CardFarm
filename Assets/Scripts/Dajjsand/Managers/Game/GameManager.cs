@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dajjsand.Controllers.Craft;
 using Dajjsand.Controllers.GameLoading;
+using Dajjsand.Controllers.Tasks;
 using Dajjsand.Enums;
 using Dajjsand.Factories.CardFactory;
 using Dajjsand.Factories.LevelConfigFactory;
@@ -17,25 +18,30 @@ namespace Dajjsand.Managers.Game
         private ICardFactory _cardFactory;
         private ILevelConfigFactory _levelConfigFactory;
         private ISaveManager _saveManager;
+        private ITasksController _tasksController;
 
         private LevelConfig _currentLevelConfig;
 
         private List<BaseCard> _spawnedFromStarterPackCards = new();
 
         public GameManager(ILoadController loadController, ICardFactory cardFactory,
-            ILevelConfigFactory levelConfigFactory, ISaveManager saveManager)
+            ILevelConfigFactory levelConfigFactory, ISaveManager saveManager,
+            ITasksController tasksController)
         {
             _loadController = loadController;
             _cardFactory = cardFactory;
             _levelConfigFactory = levelConfigFactory;
             _saveManager = saveManager;
+            _tasksController = tasksController;
 
             _loadController.OnAllLoaded += LoadController_OnAllLoaded;
+            _tasksController.OnAllTasksFinished += TasksController_OnAllTasksFinished;
         }
 
         ~GameManager()
         {
             _loadController.OnAllLoaded -= LoadController_OnAllLoaded;
+            _tasksController.OnAllTasksFinished -= TasksController_OnAllTasksFinished;
         }
 
         private void LoadController_OnAllLoaded()
@@ -50,6 +56,11 @@ namespace Dajjsand.Managers.Game
             card.OnClick += PackCard_OnClick;
         }
 
+        private void TasksController_OnAllTasksFinished()
+        {
+            CraftController.Instance.Dispose();
+        }
+
         private void PackCard_OnClick(BaseCard packCard)
         {
             CardType? card = packCard.GetCardFromContainer();
@@ -62,6 +73,7 @@ namespace Dajjsand.Managers.Game
 
             if (!packCard.IsAnyCardInContainer())
             {
+                packCard.OnClick -= PackCard_OnClick;
                 _cardFactory.ReleaseCard(packCard);
                 foreach (BaseCard newCard in _spawnedFromStarterPackCards)
                     newCard.SetDraggingLockedState(false);

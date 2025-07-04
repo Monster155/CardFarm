@@ -5,6 +5,7 @@ using Dajjsand.Managers.Save;
 using Dajjsand.View.Menu.SelectLevel;
 using Tymski;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Dajjsand.View.Menu
@@ -16,6 +17,8 @@ namespace Dajjsand.View.Menu
         [Space]
         [SerializeField] private LevelItem _levelItemPrefab;
         [SerializeField] private Transform _levelItemContainer;
+        [Space]
+        [SerializeField] private Button _backButton;
 
         private ILevelConfigFactory _levelConfigFactory;
         private ISaveManager _saveManager;
@@ -51,6 +54,8 @@ namespace Dajjsand.View.Menu
 
             _loadController.OnAllLoaded += LoadController_OnAllLoaded;
             _loadController.OnPercentageChanged += LoadController_OnPercentageChanged;
+
+            _backButton.onClick.AddListener(BackButton_OnClick);
         }
 
         private void StartLevel(int levelIndex)
@@ -63,5 +68,6 @@ namespace Dajjsand.View.Menu
         private void LevelItem_OnClick(int levelIndex) => StartLevel(levelIndex);
         private void LoadController_OnAllLoaded() => _loadingScreen.Hide();
         private void LoadController_OnPercentageChanged(float percent) => _loadingScreen.UpdateProgress(percent);
+        private void BackButton_OnClick() => Hide();
     }
 }
