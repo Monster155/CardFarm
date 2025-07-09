@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AYellowpaper.SerializedCollections;
+using Cysharp.Threading.Tasks;
 using Dajjsand.Controllers.Loading;
 using Dajjsand.Controllers.Tasks;
 using Dajjsand.Enums;
@@ -80,10 +82,13 @@ namespace Dajjsand.Factories.CardFactory
             return true;
         }
 
-        public BaseCard GetStarterPack(Dictionary<CardType, int> ingredients)
+        public List<BaseCard> GetPacks(List<CardPackData> packs) =>
+            packs.Select(GetPack).ToList();
+
+        public BaseCard GetPack(CardPackData packData)
         {
             var pack = GetCard(CardType.Pack, new Vector3(0f, 0.2f, 0f));
-            pack.SetIngredients(new Dictionary<CardType, int>(ingredients));
+            pack.SetIngredients(new Dictionary<CardType, int>(packData._cardsInside));
             return pack;
         }
 

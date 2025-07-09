@@ -27,6 +27,7 @@ namespace Dajjsand.View.Game.Cards
 
         // logic data
         private Dictionary<CardType, int> _cardsInside;
+        // private int ;
         private int _numberOfRemainingUses;
 
         // rules
@@ -83,6 +84,7 @@ namespace Dajjsand.View.Game.Cards
 
         #endregion
 
+        #region ParentingAndMerge
 
         public void MakeParenting(CardLogic childHighestCard)
         {
@@ -142,5 +144,8 @@ namespace Dajjsand.View.Game.Cards
             _mergeTimer?.Kill();
             OnMergeTimerStop?.Invoke();
         }
+
+        #endregion
+
     }
 }

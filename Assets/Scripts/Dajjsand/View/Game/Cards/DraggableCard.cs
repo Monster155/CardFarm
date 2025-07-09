@@ -95,6 +95,8 @@ namespace Dajjsand.View.Game.Cards
             else
             {
                 Vector3 pushDir = delta.normalized;
+                if (pushDir.magnitude < 0.001f)
+                    pushDir = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
                 Rigidbody.AddForce(pushDir * _pushAmount, ForceMode.Force);
                 otherCollider.Rigidbody.AddForce(-pushDir * _pushAmount, ForceMode.Force);
             }

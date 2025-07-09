@@ -15,15 +15,12 @@ MonoBehaviour:
   _levelNumber: 1
   _availableRecipes:
   - {fileID: 11400000, guid: bf5a94e2f4f88cc4faed2e86f390a610, type: 2}
-  _startIngredients:
-    _serializedList:
-    - Key: 0
-      Value: 1
-    - Key: 1
-      Value: 1
+  _starterPacks: []
   _tasksToCompleteLevel:
     _tasks:
     - rid: 8577952213431484416
+  _hasSellStore: 1
+  _storeConfigs: []
   references:
     version: 2
     RefIds:

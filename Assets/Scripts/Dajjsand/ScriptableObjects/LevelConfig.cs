@@ -12,7 +12,10 @@ namespace Dajjsand.ScriptableObjects
         public int _levelNumber;
         public List<CraftRecipe> _availableRecipes = new();
         [SerializedDictionary("CraftIngredient", "Count")]
-        public SerializedDictionary<CardType, int> _startIngredients = new();
+        public List<CardPackData> _starterPacks;
         public Tasks _tasksToCompleteLevel;
+        [Header("Store")]
+        public bool _hasSellStore = true;
+        public List<StoreConfig> _storeConfigs;
     }
 }

@@ -51,9 +51,12 @@ namespace Dajjsand.Managers.Game
             // initiating singleton
             CraftController craftController = new CraftController(_currentLevelConfig._availableRecipes, _cardFactory);
 
-            var card = _cardFactory.GetStarterPack(_currentLevelConfig._startIngredients);
-            card.SetDraggingLockedState(true);
-            card.OnClick += PackCard_OnClick;
+            var starterPacks = _cardFactory.GetPacks(_currentLevelConfig._starterPacks);
+            foreach (var pack in starterPacks)
+            {
+                pack.SetDraggingLockedState(true);
+                pack.OnClick += PackCard_OnClick;
+            }
         }
 
         private void TasksController_OnAllTasksFinished()
