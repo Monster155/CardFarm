@@ -15,7 +15,8 @@ MonoBehaviour:
   _levelNumber: 1
   _availableRecipes:
   - {fileID: 11400000, guid: bf5a94e2f4f88cc4faed2e86f390a610, type: 2}
-  _starterPacks: []
+  _starterPacks:
+  - {fileID: 11400000, guid: 0ee32c00a75fcc24d910bafbd14c2458, type: 2}
   _tasksToCompleteLevel:
     _tasks:
     - rid: 8577952213431484416

@@ -66,10 +66,10 @@ namespace Dajjsand.Managers.Game
 
         private void PackCard_OnClick(BaseCard packCard)
         {
-            CardType? card = packCard.GetCardFromContainer();
+            CardType? card = packCard.GetCardFromContainer(out Vector3 offset);
             if (card != null)
             {
-                var newCard = _cardFactory.GetCard((CardType)card, packCard.transform.position + new Vector3(0.2f, 0, 0.2f));
+                var newCard = _cardFactory.GetCard((CardType)card, packCard.transform.position + offset);
                 newCard.SetDraggingLockedState(true);
                 _spawnedFromStarterPackCards.Add(newCard);
             }

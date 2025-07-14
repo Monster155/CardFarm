@@ -43,8 +43,8 @@ namespace Dajjsand.View.Game.Cards
         public void SetIngredients(Dictionary<CardType, int> ingredients) =>
             _cardLogic.SetCardToContainer(ingredients);
 
-        public CardType? GetCardFromContainer() =>
-            _cardLogic.GetCardFromContainer();
+        public CardType? GetCardFromContainer(out Vector3 offset) =>
+            _cardLogic.GetCardFromContainer(out offset);
 
         public bool IsAnyCardInContainer() =>
             _cardLogic.IsAnyCardInContainer();

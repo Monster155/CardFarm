@@ -4,7 +4,9 @@ using System.Timers;
 using Dajjsand.Controllers.Craft;
 using Dajjsand.Enums;
 using Dajjsand.ScriptableObjects;
+using Dajjsand.Utils.Logic;
 using DG.Tweening;
+using UnityEngine;
 
 namespace Dajjsand.View.Game.Cards
 {
@@ -27,7 +29,7 @@ namespace Dajjsand.View.Game.Cards
 
         // logic data
         private Dictionary<CardType, int> _cardsInside;
-        // private int ;
+        private int _cardInPackIndex;
         private int _numberOfRemainingUses;
 
         // rules
@@ -44,6 +46,7 @@ namespace Dajjsand.View.Game.Cards
             HeadCard = this;
 
             _cardsInside = new();
+            _cardInPackIndex = 0;
         }
 
         public virtual void Used()
@@ -61,10 +64,13 @@ namespace Dajjsand.View.Game.Cards
         public void SetCardToContainer(Dictionary<CardType, int> cards)
         {
             _cardsInside = cards;
+            _cardInPackIndex = 0;
         }
 
-        public CardType? GetCardFromContainer()
+        public CardType? GetCardFromContainer(out Vector3 offset)
         {
+            offset = CardUtils.CardOffset(_cardInPackIndex);
+
             foreach (CardType card in _cardsInside.Keys)
             {
                 if (_cardsInside[card] > 0)
@@ -73,6 +79,7 @@ namespace Dajjsand.View.Game.Cards
                     if (_cardsInside[card] == 0)
                         _cardsInside.Remove(card);
 
+                    _cardInPackIndex++; // increase index only if card had
                     return card;
                 }
             }
