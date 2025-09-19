@@ -17,6 +17,7 @@ namespace Dajjsand.Controllers.Craft
         private Dictionary<CardType, List<CraftRecipe>> _recipeDictionary;
         private ICardFactory _cardFactory;
 
+        // TODO move to Zenject
         public CraftController(List<CraftRecipe> availableRecipes, ICardFactory cardFactory)
         {
             if (Instance != null)

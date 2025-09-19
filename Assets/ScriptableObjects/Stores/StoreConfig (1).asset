@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6952484f5e24ed9a517241c18d42c53, type: 3}
+  m_Name: StoreConfig (1)
+  m_EditorClassIdentifier: 
+  _price:
+    _serializedList:
+    - Key: 3
+      Value: 3
+  _dropdownPacks:
+    _serializedList:
+    - Key: {fileID: 11400000, guid: b37246b38e7de104bb9e2ed1b2a25693, type: 2}
+      Value: 1

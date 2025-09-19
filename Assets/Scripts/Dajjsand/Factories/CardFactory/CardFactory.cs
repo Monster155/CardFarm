@@ -19,7 +19,7 @@ using Object = UnityEngine.Object;
 
 namespace Dajjsand.Factories.CardFactory
 {
-    public class CardFactory : ICardFactory, ILoadable
+    public class CardFactory : ICardFactory
     {
         public event Action OnLoadComplete;
 

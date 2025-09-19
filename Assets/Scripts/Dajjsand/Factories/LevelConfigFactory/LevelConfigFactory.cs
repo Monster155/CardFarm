@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Dajjsand.Factories.LevelConfigFactory
 {
-    public class LevelConfigFactory : ILevelConfigFactory, ILoadable
+    public class LevelConfigFactory : ILevelConfigFactory
     {
         public event Action OnLoadComplete;
         public bool IsLoaded { get; private set; }
