@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6952484f5e24ed9a517241c18d42c53, type: 3}
-  m_Name: StoreConfig (1)
+  m_Name: SellStoreConfig
   m_EditorClassIdentifier: 
   _price:
     _serializedList:

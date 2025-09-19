@@ -31,6 +31,7 @@ namespace Dajjsand.Tests
             ResetCount();
         }
 
+        [Button("Spawn Card")]
         private void OnMouseUpAsButton()
         {
             var newCard = _factory.GetCard(CardType.Coin, transform.position + CardOffset(_currentCardIndex, _cardsInFirstRound, _cardsIncreaseInEachRound, _cardsCount));

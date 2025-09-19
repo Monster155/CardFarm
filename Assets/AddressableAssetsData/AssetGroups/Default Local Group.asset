@@ -45,6 +45,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de868ad48a4ef974f981fb61310b3367
+    m_Address: SellStore
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eaf61d0de84940b4ba2256699f2dc27c
     m_Address: BaseCardPrefab
     m_ReadOnly: 0
