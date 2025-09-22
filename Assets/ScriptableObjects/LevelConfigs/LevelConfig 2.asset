@@ -13,5 +13,22 @@ MonoBehaviour:
   m_Name: LevelConfig 2
   m_EditorClassIdentifier: 
   _levelNumber: 2
-  _availableRecipes: []
-  _startIngredients: 
+  _availableRecipes:
+  - {fileID: 11400000, guid: bf5a94e2f4f88cc4faed2e86f390a610, type: 2}
+  _starterPacks:
+  - {fileID: 11400000, guid: 0ee32c00a75fcc24d910bafbd14c2458, type: 2}
+  _tasksToCompleteLevel:
+    _tasks:
+    - rid: 8581533728972210252
+  _hasSellStore: 1
+  _storeConfigs:
+  - {fileID: 11400000, guid: de868ad48a4ef974f981fb61310b3367, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8581533728972210252
+      type: {class: CollectCoinsTask, ns: Dajjsand.Models.Task, asm: Assembly-CSharp}
+      data:
+        TaskName: Collect conis!
+        TaskText: You need to collect 5 coins
+        CoinsCount: 5

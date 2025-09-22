@@ -15,3 +15,4 @@ MonoBehaviour:
   _cardType: 1
   _cardTexture: {fileID: 2800000, guid: 7b1838e3f6ae2474a85254ae7ccb3048, type: 3}
   _numberOfUses: 3
+  _price: 3

@@ -10,7 +10,7 @@ namespace Dajjsand.Managers.Save
 
         public SaveManager()
         {
-            _currentLevelIndex = PlayerPrefs.GetInt("CurrentLevelIndex", 0);
+            _currentLevelIndex = PlayerPrefs.GetInt("CurrentLevelIndex", -1);
             _maxReachedLevelIndex = PlayerPrefs.GetInt("MaxReachedLevelIndex", 0);
             
             _starsByLevelIndex = new int[_maxReachedLevelIndex + 1];

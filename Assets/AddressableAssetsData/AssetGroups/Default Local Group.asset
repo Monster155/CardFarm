@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 573b6e65ef395ab49810ad696a41f5d0
+    m_Address: TestLevelConfig
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 979c16c0f83022d43a0c94707b740f74
     m_Address: CardsData
     m_ReadOnly: 0
@@ -46,7 +51,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: de868ad48a4ef974f981fb61310b3367
-    m_Address: SellStore
+    m_Address: Stores
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

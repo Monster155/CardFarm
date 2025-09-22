@@ -5,6 +5,7 @@
         public const string BaseCardPrefab = "BaseCardPrefab";
         public const string CardsData = "CardsData";
         public const string LevelsConfigs = "LevelConfigs";
+        public const string TestLevelConfig = "TestLevelConfig";
         public const string SellStore = "SellStore";
     }
 }

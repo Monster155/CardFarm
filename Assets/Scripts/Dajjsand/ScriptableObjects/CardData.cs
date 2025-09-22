@@ -9,5 +9,6 @@ namespace Dajjsand.ScriptableObjects
         public CardType _cardType;
         public Texture _cardTexture;
         public int _numberOfUses;
+        public int _price;
     }
 }
