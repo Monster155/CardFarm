@@ -1,0 +1,21 @@
+Используются:
+* zenject
+* addressables
+* factory pattern
+* архитектура - mvp extended
+* text mesh pro
+* dotween
+* unitask
+* scene reference (Tymski)
+* serialized dictionary (in my assets)
+* Odin
+
+Хорошо бы добавить:
+- ECS
+- UniRX
+- Burst
+- Render Pipeline setup
+- Localization
+
+Решения отклонены:
+- UI Toolkit - имитация HTML, но только усложняет разработку
