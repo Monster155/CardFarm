@@ -1,4 +1,4 @@
-﻿using Dajjsand.Controllers.Loading;
+﻿using Dajjsand.Controllers.GameLoading;
 using Dajjsand.Factories.LevelConfigFactory;
 using Dajjsand.Handlers.SceneLoad;
 using Dajjsand.Managers.Save;

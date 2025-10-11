@@ -1,0 +1,10 @@
+- Разделы переменных:
+    // events
+    // serialized values
+    // properties
+    // injected values
+    // private values
+
+- Конструктор и деструктор
+
+- Загрузчик ILoadable

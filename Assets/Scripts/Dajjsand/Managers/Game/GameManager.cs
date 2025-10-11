@@ -63,13 +63,20 @@ namespace Dajjsand.Managers.Game
             }
 
             // stores
-            _storeFactory.SpawnSellStore();
+            if (_currentLevelConfig._hasSellStore)
+                _storeFactory.SpawnSellStore();
             _storeFactory.SpawnStores(_currentLevelConfig._storeConfigs);
         }
 
         private void TasksController_OnAllTasksFinished()
         {
             CraftController.Instance.Dispose();
+
+            int currentLevelIndex = _currentLevelConfig._levelNumber - 1;
+            if (_saveManager.GetMaxReachedLevelIndex() <= currentLevelIndex)
+                _saveManager.SaveMaxReachedLevelIndex(currentLevelIndex + 1);
+
+            _saveManager.SetStarsByLevelIndex(currentLevelIndex, 3);
         }
 
         private void PackCard_OnClick(BaseCard packCard)

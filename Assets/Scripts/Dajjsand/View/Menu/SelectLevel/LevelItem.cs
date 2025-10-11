@@ -21,17 +21,22 @@ namespace Dajjsand.View.Menu.SelectLevel
             _levelNum = levelNum;
             _levelNumText.text = (_levelNum + 1).ToString();
 
-            for (int i = 0; i < starsCount; i++)
-                _stars[i].SetActive(true);
-            for (int i = starsCount; i < _stars.Length; i++)
-                _stars[i].SetActive(false);
-            
-            _lockGroup.SetActive(!isUnlocked);
+            UpdateContent(starsCount, isUnlocked);
         }
 
         private void Start()
         {
             _button.onClick.AddListener(Button_OnClick);
+        }
+
+        public void UpdateContent(int starsCount, bool isUnlocked)
+        {
+            for (int i = 0; i < starsCount; i++)
+                _stars[i].SetActive(true);
+            for (int i = starsCount; i < _stars.Length; i++)
+                _stars[i].SetActive(false);
+
+            _lockGroup.SetActive(!isUnlocked);
         }
 
         private void Button_OnClick() => OnClick?.Invoke(_levelNum);

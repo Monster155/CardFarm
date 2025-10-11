@@ -20,9 +20,8 @@ MonoBehaviour:
   _tasksToCompleteLevel:
     _tasks:
     - rid: 8581533728972210252
-  _hasSellStore: 1
-  _storeConfigs:
-  - {fileID: 11400000, guid: de868ad48a4ef974f981fb61310b3367, type: 2}
+  _hasSellStore: 0
+  _storeConfigs: []
   references:
     version: 2
     RefIds:

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dajjsand.Controllers.Loading;
+using Dajjsand.Controllers.GameLoading;
 using Dajjsand.ScriptableObjects;
 using Dajjsand.Utils.Constants;
 using UnityEngine;
@@ -21,12 +21,21 @@ namespace Dajjsand.Factories.LevelConfigFactory
         private LevelConfig _testLevelConfig;
         private AsyncOperationHandle<LevelConfig> _testLevelConfigLoadingHandle;
 
-        public LevelConfigFactory()
+        public LevelConfigFactory(ILoadController loadController)
         {
+            IsLoaded = false;
+            loadController.AddLoadable(this);
+            
             _levelsConfigsLoadingHandle = Addressables.LoadAssetsAsync<LevelConfig>(AddressablePathConstants.LevelsConfigs);
             _levelsConfigsLoadingHandle.Completed += LevelsConfigsLoadingHandle_Completed;
             _testLevelConfigLoadingHandle = Addressables.LoadAssetAsync<LevelConfig>(AddressablePathConstants.TestLevelConfig);
             _testLevelConfigLoadingHandle.Completed += TestLevelConfigLoadingHandle_Completed;
+        }
+
+        ~LevelConfigFactory()
+        {
+            _levelsConfigsLoadingHandle.Completed -= LevelsConfigsLoadingHandle_Completed;
+            _testLevelConfigLoadingHandle.Completed -= TestLevelConfigLoadingHandle_Completed;
         }
 
         public LevelConfig GetLevelConfig(int levelIndex)
@@ -66,7 +75,7 @@ namespace Dajjsand.Factories.LevelConfigFactory
                     Debug.Log($"Loaded Level config for level {config._levelNumber}");
                 }
             }
-            else Debug.LogError($"LevelsConfigsLoadingHandle finished with {handle.Status} status");
+            else Debug.LogError($"{nameof(LevelsConfigsLoadingHandle_Completed)} finished with {handle.Status} status");
 
             UpdateLoadingState();
         }
@@ -77,7 +86,7 @@ namespace Dajjsand.Factories.LevelConfigFactory
             {
                 _testLevelConfig = handle.Result;
             }
-            else Debug.LogError($"TestLevelConfigLoadingHandle finished with {handle.Status} status");
+            else Debug.LogError($"{nameof(TestLevelConfigLoadingHandle_Completed)} finished with {handle.Status} status");
 
             UpdateLoadingState();
         }

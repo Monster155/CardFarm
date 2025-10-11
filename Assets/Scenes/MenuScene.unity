@@ -3792,7 +3792,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1015
 --- !u!114 &1596440693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4937,8 +4937,8 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 150
-    m_Bottom: 150
+    m_Top: 160
+    m_Bottom: 160
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0

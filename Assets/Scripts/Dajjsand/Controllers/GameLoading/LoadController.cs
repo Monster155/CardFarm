@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dajjsand.Factories.CardFactory;
-using Dajjsand.Factories.LevelConfigFactory;
-using Dajjsand.Handlers.SceneLoad;
-using Dajjsand.Managers.Save;
 
 namespace Dajjsand.Controllers.GameLoading
 {
@@ -13,26 +9,26 @@ namespace Dajjsand.Controllers.GameLoading
         public event Action OnAllLoaded;
         public event Action<float> OnPercentageChanged;
 
-        public bool IsAllLoaded { get; private set; }
+        public bool IsAllLoaded { get; private set; } = false;
 
-        private List<ILoadable> _loadables = new();
+        public delegate void LoadingStatus(bool isLoaded);
 
-        public LoadController(ICardFactory cardFactory, ILevelConfigFactory levelConfigFactory)
-        {
-            _loadables.Add(cardFactory);
-            _loadables.Add(levelConfigFactory);
+        private LoadingStatus _loadingStatus;
+        private List<ILoadable> _loadables = new List<ILoadable>();
 
-            foreach (ILoadable l in _loadables)
-                l.OnLoadComplete += Loadable_OnLoadComplete;
-
-            IsAllLoaded = false;
-        }
+        public LoadController() { }
 
         ~LoadController()
         {
             foreach (ILoadable l in _loadables)
                 l.OnLoadComplete -= Loadable_OnLoadComplete;
             _loadables.Clear();
+        }
+
+        public void AddLoadable(ILoadable loadable)
+        {
+            _loadables.Add(loadable);
+            loadable.OnLoadComplete += Loadable_OnLoadComplete;
         }
 
         private void Loadable_OnLoadComplete()

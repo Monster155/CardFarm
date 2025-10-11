@@ -7,6 +7,7 @@
         public void SaveMaxReachedLevelIndex(int levelIndex);
         public int GetMaxReachedLevelIndex();
         public void SetStarsByLevelIndex(int levelIndex, int stars);
-        public int[] GetStarsByLevelIndex();
+        public int GetStarsByLevelIndex(int levelIndex);
+        public int[] GetAllStarsByLevel();
     }
 }

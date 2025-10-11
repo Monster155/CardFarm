@@ -1,4 +1,6 @@
-﻿using Dajjsand.Controllers.Loading;
+﻿using System;
+using System.Collections.Generic;
+using Dajjsand.Controllers.GameLoading;
 using Dajjsand.Factories.LevelConfigFactory;
 using Dajjsand.Handlers.SceneLoad;
 using Dajjsand.Managers.Save;
@@ -25,6 +27,8 @@ namespace Dajjsand.View.Menu
         private ISceneLoadHandler _sceneLoadHandler;
         private ILoadController _loadController;
 
+        private List<LevelItem> _levelItems = new List<LevelItem>();
+
         [Inject]
         private void Construct(ILevelConfigFactory levelConfigFactory, ISaveManager saveManager,
             ISceneLoadHandler sceneLoadHandler, ILoadController loadController)
@@ -38,8 +42,8 @@ namespace Dajjsand.View.Menu
         private void Start()
         {
             int levelsCount = _levelConfigFactory.GetLevelsCount();
-            var maxReachedLevelIndex = _saveManager.GetMaxReachedLevelIndex();
-            int[] starsByLevelIndex = _saveManager.GetStarsByLevelIndex();
+            int maxReachedLevelIndex = _saveManager.GetMaxReachedLevelIndex();
+            int[] starsByLevelIndex = _saveManager.GetAllStarsByLevel();
 
             for (int levelIndex = 0; levelIndex < levelsCount; levelIndex++)
             {
@@ -50,12 +54,37 @@ namespace Dajjsand.View.Menu
                         ? starsByLevelIndex[levelIndex]
                         : 0,
                     levelIndex <= maxReachedLevelIndex);
+
+                _levelItems.Add(levelItem);
             }
 
             _loadController.OnAllLoaded += LoadController_OnAllLoaded;
             _loadController.OnPercentageChanged += LoadController_OnPercentageChanged;
 
             _backButton.onClick.AddListener(BackButton_OnClick);
+        }
+
+        private void OnDestroy()
+        {
+            _loadController.OnAllLoaded -= LoadController_OnAllLoaded;
+            _loadController.OnPercentageChanged -= LoadController_OnPercentageChanged;
+            
+            _backButton.onClick.RemoveListener(BackButton_OnClick);
+        }
+
+        private void OnEnable()
+        {
+            int maxReachedLevelIndex = _saveManager.GetMaxReachedLevelIndex();
+            int[] starsByLevelIndex = _saveManager.GetAllStarsByLevel();
+
+            for (int levelIndex = 0; levelIndex < _levelItems.Count; levelIndex++)
+            {
+                _levelItems[levelIndex].UpdateContent(
+                    levelIndex < starsByLevelIndex.Length
+                        ? starsByLevelIndex[levelIndex]
+                        : 0,
+                    levelIndex <= maxReachedLevelIndex);
+            }
         }
 
         private void StartLevel(int levelIndex)
@@ -65,9 +94,19 @@ namespace Dajjsand.View.Menu
             _ = _sceneLoadHandler.LoadSceneAsync(_gameScene);
         }
 
+        private void LoadingFinished()
+        {
+            _loadingScreen.Hide();
+        }
+
+        private void UpdateLoadingProgress(float percent)
+        {
+            _loadingScreen.UpdateProgress(percent);
+        }
+
         private void LevelItem_OnClick(int levelIndex) => StartLevel(levelIndex);
-        private void LoadController_OnAllLoaded() => _loadingScreen.Hide();
-        private void LoadController_OnPercentageChanged(float percent) => _loadingScreen.UpdateProgress(percent);
+        private void LoadController_OnAllLoaded() => LoadingFinished();
+        private void LoadController_OnPercentageChanged(float percent) => UpdateLoadingProgress(percent);
         private void BackButton_OnClick() => Hide();
     }
 }

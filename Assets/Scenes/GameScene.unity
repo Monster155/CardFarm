@@ -1882,6 +1882,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CardsContainer>k__BackingField: {fileID: 1382661169}
+  <SellStoreCardContainer>k__BackingField: {fileID: 2138155158}
+  <StoreCardsContainer>k__BackingField: {fileID: 2138155158}
 --- !u!1 &1737135449
 GameObject:
   m_ObjectHideFlags: 0
