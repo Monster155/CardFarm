@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36b169c39d7c49409241cc2cc85aff2d, type: 3}
-  m_Name: StarterPack (1)
+  m_Name: StarterPack 1
   m_EditorClassIdentifier: 
   _cardsInside:
     _serializedList:

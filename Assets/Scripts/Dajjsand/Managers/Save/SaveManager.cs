@@ -21,7 +21,6 @@ namespace Dajjsand.Managers.Save
             for (int levelIndex = 0; levelIndex < _starsByLevelIndex.Length; levelIndex++)
             {
                 _starsByLevelIndex[levelIndex] = PlayerPrefs.GetInt(StarsByLevelIndexText(levelIndex), 0);
-                Debug.LogError($"Stars: {levelIndex}={_starsByLevelIndex[levelIndex]}");
             }
         }
 
@@ -30,7 +29,6 @@ namespace Dajjsand.Managers.Save
             PlayerPrefs.SetInt(CurrentLevelIndex, levelIndex);
             PlayerPrefs.Save();
             _currentLevelIndex = levelIndex;
-            Debug.LogError($"Save Current: {levelIndex}");
         }
 
         public int GetCurrentLevelIndex() => _currentLevelIndex;
@@ -40,7 +38,6 @@ namespace Dajjsand.Managers.Save
             PlayerPrefs.SetInt(MaxReachedLevelIndex, levelIndex);
             PlayerPrefs.Save();
             _maxReachedLevelIndex = levelIndex;
-            Debug.LogError($"Save Max: {levelIndex}");
         }
 
         public int GetMaxReachedLevelIndex() => _maxReachedLevelIndex;
@@ -50,7 +47,6 @@ namespace Dajjsand.Managers.Save
             PlayerPrefs.SetInt(StarsByLevelIndexText(levelIndex), stars);
             PlayerPrefs.Save();
             _starsByLevelIndex[levelIndex] = stars;
-            Debug.LogError($"Save Stars: {levelIndex} = {stars}");
         }
 
         public int GetStarsByLevelIndex(int levelIndex) => _starsByLevelIndex[levelIndex];

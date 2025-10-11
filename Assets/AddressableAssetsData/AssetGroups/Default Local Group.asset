@@ -15,6 +15,16 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: b4f06a309d840fc44b8a459694e1dd11
   m_SerializeEntries:
+  - m_GUID: 16dcd602616a1224e910bc37f12a31e5
+    m_Address: LevelConfigs
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35e2c9c973638714c86a7d7735e72a7d
+    m_Address: CardsData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4e6b57aaf9671724595e05ce55b58516
     m_Address: CardsData
     m_ReadOnly: 0
@@ -45,7 +55,22 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b12a6b863cf583f44881f6f495a7a52a
+    m_Address: CardsData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b3c948dcf8bbac446b801837a0ab00a1
+    m_Address: CardsData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b779e890ffba7cb4fb9910280f864216
+    m_Address: CardsData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c84edce0942762f41beb56c080a1fb6c
     m_Address: CardsData
     m_ReadOnly: 0
     m_SerializedLabels: []

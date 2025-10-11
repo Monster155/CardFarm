@@ -7,5 +7,9 @@
         Wheat,
         Coin,
         Pack,
+        Cow,
+        Milk,
+        ButterChurn,
+        Butter,
     }
 }

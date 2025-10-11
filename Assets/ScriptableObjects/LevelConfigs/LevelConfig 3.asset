@@ -10,15 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b20f994e2816416992bcd89af3249da6, type: 3}
-  m_Name: LevelConfig 2
+  m_Name: LevelConfig 3
   m_EditorClassIdentifier: 
-  _levelNumber: 2
+  _levelNumber: 3
   _availableRecipes:
   - {fileID: 11400000, guid: bf5a94e2f4f88cc4faed2e86f390a610, type: 2}
   - {fileID: 11400000, guid: acd6c4bb828397c44be0ab1c400f5502, type: 2}
+  - {fileID: 11400000, guid: bf5a94e2f4f88cc4faed2e86f390a610, type: 2}
   _starterPacks:
-  - {fileID: 11400000, guid: 11d4bee7d5b1eb241a9086f883e36bf6, type: 2}
-  _craftHints: 1 wheat = 1 villager + 1 garden\n1 milk = 1 cow + 1 wheat
+  - {fileID: 11400000, guid: 19b08ad2330e97344aeb5d015a27dff9, type: 2}
+  _craftHints: 1 wheat = 1 villager + 1 garden\n1 milk = 1 cow + 1 wheat\n1 butter
+    = 2 milk + 1 butter churn
   _tasksToCompleteLevel:
     _tasks:
     - rid: 2027518394295910478
@@ -30,8 +32,8 @@ MonoBehaviour:
     - rid: 2027518394295910478
       type: {class: GetCardsTask, ns: Dajjsand.Models.Task, asm: Assembly-CSharp}
       data:
-        _taskName: Earn 3 milk cards
+        _taskName: Earn 2 butter cards
         _requiredCards:
           _serializedList:
-          - Key: 6
-            Value: 3
+          - Key: 8
+            Value: 2

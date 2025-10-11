@@ -17,6 +17,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bf5a94e2f4f88cc4faed2e86f390a610, type: 2}
   _starterPacks:
   - {fileID: 11400000, guid: 0ee32c00a75fcc24d910bafbd14c2458, type: 2}
+  _craftHints: 1 wheat = 1 villager + 1 garden
   _tasksToCompleteLevel:
     _tasks:
     - rid: 8577952213431484416
@@ -28,7 +29,7 @@ MonoBehaviour:
     - rid: 8577952213431484416
       type: {class: GetCardsTask, ns: Dajjsand.Models.Task, asm: Assembly-CSharp}
       data:
-        _taskName: Earn 3 wheats
+        _taskName: Earn 3 wheat cards
         _requiredCards:
           _serializedList:
           - Key: 2
