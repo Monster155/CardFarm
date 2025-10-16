@@ -44,7 +44,7 @@ namespace Dajjsand.Factories.CardFactory
         public CardFactory(ILoadController loadController, ContainersHandler containersHandler, ITasksController tasksController)
         {
             loadController.AddLoadable(this);
-            
+
             _containersHandler = containersHandler;
             _tasksController = tasksController;
 
@@ -69,7 +69,7 @@ namespace Dajjsand.Factories.CardFactory
             var card = _cardPool.Get();
             card.gameObject.SetActive(true);
 
-            card.Init(_cards[cardType], _containersHandler.CardsContainer);
+            card.Init(_cards[cardType]);
             card.name = cardType.ToString();
             card.transform.position = pos;
 
@@ -80,6 +80,7 @@ namespace Dajjsand.Factories.CardFactory
 
         public bool ReleaseCard(BaseCard card)
         {
+            card.ReleasingCard();
             card.transform.position = new Vector3(0f, -100f, 0f);
             card.transform.parent = _containersHandler.CardsContainer;
             card.gameObject.SetActive(false);
@@ -106,8 +107,21 @@ namespace Dajjsand.Factories.CardFactory
             }
 
             var card = Object.Instantiate(_baseCardPrefab, _containersHandler.CardsContainer);
-            card.OnDestroy += thisCard => ReleaseCard(thisCard);
+            card.SpawnInit(_cardPool.CountAll);
+            card.OnUsesCountEnd += Card_OnUsesCountEnd;
+            card.OnParentChanged += Card_OnParentChanged;
             return card;
+        }
+
+        private void Card_OnUsesCountEnd(BaseCard baseCard) =>
+            ReleaseCard(baseCard);
+
+        private void Card_OnParentChanged(BaseCard baseCard, CardLogic parentCardLogic)
+        {
+            if (parentCardLogic != null)
+                baseCard.SetParentTransform(parentCardLogic.ChildContainer, true);
+            else
+                baseCard.SetParentTransform(_containersHandler.CardsContainer, false);
         }
 
         private void UpdateLoadingState()

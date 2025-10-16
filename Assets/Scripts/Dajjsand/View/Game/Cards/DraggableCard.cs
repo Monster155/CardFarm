@@ -1,6 +1,8 @@
-﻿using Dajjsand.Controllers.Craft;
+﻿using System;
+using Dajjsand.Controllers.Craft;
 using Dajjsand.Enums;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Dajjsand.View.Game.Cards
 {
@@ -9,60 +11,70 @@ namespace Dajjsand.View.Game.Cards
         [SerializeField] private float _hoverHeight = 0.2f;
         [SerializeField] private LayerMask _cardLayer;
         [SerializeField] private LayerMask _mapLayer;
+        [SerializeField] private CardLogic _cardLogic;
         [Space]
-        [SerializeField] private float _pushAmount = 1f;
-        [field: SerializeField] public Rigidbody Rigidbody { get; private set; }
+        [SerializeField] private float _pushAmount = 7f;
+        [SerializeField] private Rigidbody _rigidbody;
 
-        public bool IsDraggingLocked { get; set; } = false;
+        public bool IsDraggingLocked
+        {
+            get => _isDraggingLocked;
+            set
+            {
+                _isDraggingLocked = value;
+                if (value)
+                    PutCard();
+            }
+        }
+
         public bool IsDragging { get; private set; } = false;
-        public CardLogic Logic { get; private set; }
-
-        private Camera _mainCamera;
         public float LastDragTime { get; private set; } = 0f;
 
-        public void Init(CardLogic cardLogic)
-        {
-            Logic = cardLogic;
-            Logic.OnParentChanged += BaseCard_OnParentChanged;
+        private Camera _mainCamera;
+        private bool _isDraggingLocked;
 
+
+        public void Init()
+        {
             _mainCamera = Camera.main;
             IsDraggingLocked = false;
         }
 
+        private void Start()
+        {
+            _cardLogic.OnParentChanged += CardLogic_OnParentChanged;
+        }
+
         #region Dragging
 
-        public void MouseDown()
+        public void TakeCard()
         {
             if (IsDraggingLocked)
                 return;
 
-            Logic.LoseChildren();
+            _cardLogic.LoseParentDeck(); // should always be before isKinematic change
+
             IsDragging = true;
-            Rigidbody.useGravity = false;
-            Rigidbody.linearVelocity = Vector3.zero;
-            Rigidbody.transform.position += Vector3.up * _hoverHeight;
-            Rigidbody.transform.rotation = Quaternion.identity;
+
+            _rigidbody.isKinematic = true;
+            _rigidbody.transform.position += Vector3.up * _hoverHeight;
         }
 
-        public void MouseDrag()
+        public void DragCard()
         {
             if (IsDraggingLocked)
                 return;
 
-            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hitInfo, 100f, _mapLayer))
-            {
-                Vector3 targetPosition = hitInfo.point;
-                targetPosition.y += _hoverHeight;
-                Rigidbody.transform.position = targetPosition;
-            }
+            LastDragTime = Time.time;
+
+            MoveCardToMouse();
         }
 
-        public void MouseUp()
+        public void PutCard()
         {
             // if locked on move
+            _rigidbody.isKinematic = false;
             IsDragging = false;
-            Rigidbody.useGravity = true;
 
             LastDragTime = Time.time;
 
@@ -74,40 +86,69 @@ namespace Dajjsand.View.Game.Cards
 
         #endregion
 
+        private void MoveCardToMouse()
+        {
+            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 100f, _mapLayer))
+            {
+                Vector3 targetPosition = hitInfo.point;
+                targetPosition += Vector3.up * _hoverHeight;
+                _rigidbody.transform.position = targetPosition;
+            }
+        }
+
         private void OnTriggerStay(Collider other)
         {
-            var otherCollider = other.GetComponent<DraggableCard>();
+            var otherCard = other.GetComponent<DraggableCard>();
 
-            if (IsDragging || otherCollider.IsDragging)
-                return;
-
-            if (Logic.HeadCard.Equals(otherCollider.Logic.HeadCard))
-                return;
-
-            Vector3 delta = transform.position - other.transform.position;
-            delta.y = 0;
-
-            if (CanCardsBeMerged(Logic.Type, otherCollider.Logic.Type))
+            if (IsInSameDeck(this, otherCard))
             {
-                if (LastDragTime < otherCollider.LastDragTime)
-                    Logic.MakeParenting(otherCollider.Logic);
+                // disable all cards triggers and left only for HeadCard
+                Debug.LogWarning("You trying to merge cards in same deck");
+                return;
+            }
+
+            // ignore it over card moves then dragging
+            if (otherCard.IsDragging)
+                return;
+
+            if (IsDragging) // make all other decks to check stacking and outline it if allowed
+                return;
+
+            if (_cardLogic.IsMaxSizeDeck(otherCard._cardLogic.DeckSize))
+                return;
+
+            if (CanCardsBeStacked(_cardLogic.Type, otherCard._cardLogic.Type))
+            {
+                if (LastDragTime < otherCard.LastDragTime)
+                    _cardLogic.AddCardsFrom(otherCard._cardLogic);
             }
             else
-            {
-                Vector3 pushDir = delta.normalized;
-                if (pushDir.magnitude < 0.001f)
-                    pushDir = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
-                Rigidbody.AddForce(pushDir * _pushAmount, ForceMode.Force);
-                otherCollider.Rigidbody.AddForce(-pushDir * _pushAmount, ForceMode.Force);
-            }
+                PushAwayCards(this, otherCard);
         }
 
-        private void BaseCard_OnParentChanged(BaseCard parentCard)
+        private void CardLogic_OnParentChanged(CardLogic cardLogic)
         {
-            Rigidbody.isKinematic = parentCard != null;
+            _rigidbody.isKinematic = cardLogic != null;
         }
 
-        private bool CanCardsBeMerged(CardType card1, CardType card2) =>
+        private bool CanCardsBeStacked(CardType card1, CardType card2) =>
             CraftController.Instance?.CanBeMerged(card1, card2) ?? false;
+
+        private void PushAwayCards(DraggableCard card1, DraggableCard card2)
+        {
+            Vector3 delta = card1.transform.position - card2.transform.position;
+            delta.y = 0;
+            Vector3 pushDir = delta.normalized;
+
+            if (pushDir.magnitude < 0.001f)
+                pushDir = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
+
+            card1._rigidbody.AddForce(pushDir * _pushAmount, ForceMode.Force);
+            card2._rigidbody.AddForce(-pushDir * _pushAmount, ForceMode.Force);
+        }
+
+        private bool IsInSameDeck(DraggableCard card1, DraggableCard card2) =>
+            card1._cardLogic.HeadCard.ID == card2._cardLogic.HeadCard.ID;
     }
 }

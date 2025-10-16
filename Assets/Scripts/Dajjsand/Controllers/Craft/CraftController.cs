@@ -4,6 +4,7 @@ using System.Linq;
 using Dajjsand.Enums;
 using Dajjsand.Factories.CardFactory;
 using Dajjsand.ScriptableObjects;
+using Dajjsand.Utils.Logic;
 using Dajjsand.View.Game.Cards;
 using DG.Tweening;
 using UnityEngine;
@@ -69,7 +70,7 @@ namespace Dajjsand.Controllers.Craft
             return false;
         }
 
-        public CraftRecipe GetRecipeForStock(Dictionary<CardType, int> ingredientsInHands)
+        public CraftRecipe GetRecipeForDeck(Dictionary<CardType, int> ingredientsInHands)
         {
             List<CraftRecipe> recipes = null;
             foreach (CardType type in ingredientsInHands.Keys)
@@ -107,7 +108,12 @@ namespace Dajjsand.Controllers.Craft
             return null;
         }
 
-        private Dictionary<CardType, int> GetAllCardsInStock(CardLogic headCard)
+        /// <summary>
+        /// Get all cards in Deck as Dictionary (CardType, Count)
+        /// </summary>
+        /// <param name="headCard">Highest card in deck</param>
+        /// <returns>Dictionary of cards in deck as (CardType, Count)</returns>
+        private Dictionary<CardType, int> GetAllCardsInDeck(CardLogic headCard)
         {
             Dictionary<CardType, int> ingredients = new();
             var card = headCard;
@@ -122,11 +128,11 @@ namespace Dajjsand.Controllers.Craft
             return ingredients;
         }
 
-        public bool TryToStartMerge(CardLogic headCard, TweenCallback<float> onUpdate, TweenCallback onFinish, out Tweener timer)
+        public bool TryToStartMergeCardsInDeck(CardLogic headCard, TweenCallback<float> onUpdate, TweenCallback onFinish, out Tweener timer)
         {
             timer = null;
-            Dictionary<CardType, int> ingredients = GetAllCardsInStock(headCard);
-            var recipe = GetRecipeForStock(ingredients);
+            Dictionary<CardType, int> ingredients = GetAllCardsInDeck(headCard);
+            var recipe = GetRecipeForDeck(ingredients);
 
             bool isStarted = recipe != null;
             if (isStarted)
@@ -147,10 +153,13 @@ namespace Dajjsand.Controllers.Craft
                     card = card.ChildCard;
                     card.Used();
                 }
+                var lowestCard = card;
 
-                foreach (var type in recipe._result)
-                    _cardFactory.GetCard(type,
-                        headCard.Card.transform.position + new Vector3(0.2f, 0, 0.2f));
+                for (int i = 0; i < recipe._result.Count; i++)
+                {
+                    CardType type = recipe._result[i];
+                    _cardFactory.GetCard(type, lowestCard.ChildContainer.position + CardUtils.CardOffset(i));
+                }
 
                 onFinish?.Invoke();
             };

@@ -1,90 +1,121 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Timers;
 using Dajjsand.Controllers.Craft;
 using Dajjsand.Enums;
 using Dajjsand.ScriptableObjects;
+using Dajjsand.Utils.Constants;
 using Dajjsand.Utils.Logic;
 using DG.Tweening;
 using UnityEngine;
 
 namespace Dajjsand.View.Game.Cards
 {
-    public class CardLogic
+    public class CardLogic : MonoBehaviour
     {
-        public event Action OnUsesCountEnd;
-        public event Action<BaseCard> OnParentChanged;
-        public event Action<float> OnMergeTimerUpdate;
-        public event Action OnMergeTimerStart;
-        public event Action OnMergeTimerStop;
-        public event Action OnMergeTimerFinish;
+        public event Action<int> OnUsesCountChanged;
+        public event Action<CardLogic> OnParentChanged;
 
-        // base data
-        public CardData CardData { get; private set; }
-        public BaseCard Card { get; private set; }
+        public CardType Type => _cardData._cardType;
 
         // parenting
         public CardLogic HeadCard { get; private set; }
+        public CardLogic ParentCard { get; private set; }
         public CardLogic ChildCard { get; private set; }
 
+        public int DeckSize { get; private set; } = 1;
+        public int ID { get; private set; }
+
+        // serialize fields
+        [SerializeField] private MergeBar _mergeBar;
+        [field: SerializeField] public Transform ChildContainer { get; private set; }
+
         // logic data
-        private Dictionary<CardType, int> _cardsInside;
-        private int _cardInPackIndex;
+        private CardData _cardData;
+
         private int _numberOfRemainingUses;
 
-        // rules
-        public CardType Type => CardData._cardType;
+        private Dictionary<CardType, int> _cardsInside;
+        private int _cardsDroppedFromPack;
+
         private Tweener _mergeTimer;
 
 
-        public void Init(CardData cardData, BaseCard card)
+        public void Init(CardData cardData, int id)
         {
-            CardData = cardData;
-            _numberOfRemainingUses = CardData._numberOfUses;
+            _cardData = cardData;
+            ID = id;
+            _numberOfRemainingUses = _cardData._numberOfUses;
 
-            Card = card;
             HeadCard = this;
+            ParentCard = null;
+            ChildCard = null;
 
             _cardsInside = new();
-            _cardInPackIndex = 0;
+            _cardsDroppedFromPack = 0;
         }
 
-        public virtual void Used()
+        public void Used()
         {
             if (_numberOfRemainingUses < 0)
                 return;
 
             _numberOfRemainingUses--;
-            if (_numberOfRemainingUses == 0)
-                OnUsesCountEnd?.Invoke();
+            OnUsesCountChanged?.Invoke(_numberOfRemainingUses);
+        }
+
+        public void ReleasingCard()
+        {
+            // lowest card
+            // do nothing
+
+            // middle card
+            if (ParentCard != null && ChildCard != null)
+            {
+                ParentCard.ChildCard = this.ChildCard;
+                this.ChildCard.OnParentChanged?.Invoke(ParentCard);
+            }
+
+            // highest card
+            if (HeadCard.ID == this.ID)
+            {
+                if (ChildCard != null)
+                {
+                    ChildCard.ParentCard = null;
+                    ChildCard.OnParentChanged?.Invoke(null);
+                    ChildCard.SetThisCardAsNewHeadCard(ChildCard);
+                }
+                // if it deck from 1 card - do nothing
+            }
         }
 
         #region CardsContainer
 
         public void SetCardToContainer(Dictionary<CardType, int> cards)
         {
-            _cardsInside = cards;
-            _cardInPackIndex = 0;
+            _cardsInside = cards
+                .Where(pair => pair.Value > 0)
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
+            _cardsDroppedFromPack = 0;
         }
 
         public CardType? GetCardFromContainer(out Vector3 offset)
         {
-            offset = CardUtils.CardOffset(_cardInPackIndex);
+            offset = CardUtils.CardOffset(_cardsDroppedFromPack);
 
-            foreach (CardType card in _cardsInside.Keys)
-            {
-                if (_cardsInside[card] > 0)
-                {
-                    _cardsInside[card]--;
-                    if (_cardsInside[card] == 0)
-                        _cardsInside.Remove(card);
+            if (_cardsInside.Count == 0)
+                return null;
 
-                    _cardInPackIndex++; // increase index only if card had
-                    return card;
-                }
-            }
+            int rand = UnityEngine.Random.Range(0, _cardsInside.Count);
+            CardType card = _cardsInside.Keys.ElementAt(rand);
 
-            return null;
+            _cardsInside[card]--;
+            if (_cardsInside[card] == 0)
+                _cardsInside.Remove(card);
+
+            _cardsDroppedFromPack++; // increase index only if card had
+            return card;
         }
 
         public bool IsAnyCardInContainer() => _cardsInside.Count > 0;
@@ -93,66 +124,82 @@ namespace Dajjsand.View.Game.Cards
 
         #region ParentingAndMerge
 
-        public void MakeParenting(CardLogic childHighestCard)
+        public void AddCardsFrom(CardLogic newDeckCard)
         {
-            var lowestCard = this;
-            while (lowestCard.ChildCard != null)
-            {
-                lowestCard = lowestCard.ChildCard;
-            }
+            // find the lowest card
+            var currentDeckLowestCard = this;
+            while (currentDeckLowestCard.ChildCard != null)
+                currentDeckLowestCard = currentDeckLowestCard.ChildCard;
 
-            lowestCard.ChildCard = childHighestCard;
+            // set transform parent of decks
+            newDeckCard.HeadCard.OnParentChanged?.Invoke(currentDeckLowestCard);
+            
+            newDeckCard.ParentCard = currentDeckLowestCard;
+            currentDeckLowestCard.ChildCard = newDeckCard.HeadCard; // add cards from new deck to bottom
+            SetThisCardAsNewHeadCard(newDeckCard); // set new HeadCard to all cards from new deck
 
-            var card = childHighestCard;
-            card.HeadCard = HeadCard;
-            while (card.ChildCard != null)
-            {
-                card = card.ChildCard;
-                card.HeadCard = HeadCard;
-            }
-
-            childHighestCard.OnParentChanged?.Invoke(lowestCard.Card);
-
-            StartTimer();
+            TryToStartMerge();
         }
 
-        private void StartTimer()
+        public void LoseParentDeck()
         {
-            if (CraftController.Instance.TryToStartMerge(
+            // all deck took
+            if (ParentCard == null)
+                return;
+
+            HeadCard.StopMergeTimer();
+
+            ParentCard.ChildCard = null;
+            this.ParentCard = null;
+
+            HeadCard = this;
+            SetThisCardAsNewHeadCard(this);
+
+            OnParentChanged?.Invoke(null);
+        }
+
+        private void SetThisCardAsNewHeadCard(CardLogic anyCardOfDeck)
+        {
+            var secondDeckCard = anyCardOfDeck.HeadCard;
+            secondDeckCard.HeadCard = HeadCard;
+            while (secondDeckCard.ChildCard != null)
+            {
+                secondDeckCard = secondDeckCard.ChildCard;
+                secondDeckCard.HeadCard = HeadCard;
+            }
+        }
+
+        private void TryToStartMerge()
+        {
+            if (CraftController.Instance.TryToStartMergeCardsInDeck(
                     HeadCard,
-                    percentage => OnMergeTimerUpdate?.Invoke(percentage),
+                    percentage => _mergeBar.UpdateProgress(percentage),
                     MergeTimerFinish,
                     out Tweener timer))
             {
-                OnMergeTimerStart?.Invoke();
+                _mergeBar.StartMerge();
                 _mergeTimer = timer;
             }
         }
 
         private void MergeTimerFinish()
         {
-            OnMergeTimerFinish?.Invoke();
-            StartTimer();
-        }
-
-        public void LoseChildren()
-        {
-            HeadCard.StopMergeTimer();
-
-            if (ChildCard != null)
-                ChildCard.HeadCard = ChildCard;
-            ChildCard = null;
-
-            OnParentChanged?.Invoke(null);
+            _mergeBar.FinishMerge();
+            TryToStartMerge();
         }
 
         private void StopMergeTimer()
         {
             _mergeTimer?.Kill();
-            OnMergeTimerStop?.Invoke();
+            _mergeBar.StopMerge();
         }
 
         #endregion
 
+        public bool IsMaxSizeDeck(int otherDeckSize)
+        {
+            Debug.LogWarning("Max Deck Size doesn't work");
+            return DeckSize + otherDeckSize > BaseValues.MaxDeckSize;
+        }
     }
 }

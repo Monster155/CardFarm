@@ -127,8 +127,9 @@ MonoBehaviour:
   _mapLayer:
     serializedVersion: 2
     m_Bits: 64
+  _cardLogic: {fileID: 8531198417949887798}
   _pushAmount: 7
-  <Rigidbody>k__BackingField: {fileID: 1857880460887898675}
+  _rigidbody: {fileID: 1857880460887898675}
 --- !u!65 &5479062128280425323
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -160,6 +161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6348288031219280834}
   - component: {fileID: -4507961085767052338}
+  - component: {fileID: 8531198417949887798}
   - component: {fileID: 1857880460887898675}
   - component: {fileID: 3883173127835102769}
   m_Layer: 7
@@ -201,9 +203,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1066991884803013894}
-  _mergeBar: {fileID: 5561757523791812346}
-  _childContainer: {fileID: 969472330560812016}
   _draggableCard: {fileID: 119058887883446278}
+  _cardLogic: {fileID: 8531198417949887798}
+--- !u!114 &8531198417949887798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2593084132694254325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b309be4ba6ba4d90ba56ed1419d07e9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mergeBar: {fileID: 5561757523791812346}
+  <ChildContainer>k__BackingField: {fileID: 969472330560812016}
 --- !u!54 &1857880460887898675
 Rigidbody:
   m_ObjectHideFlags: 0
