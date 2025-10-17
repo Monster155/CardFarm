@@ -46,7 +46,7 @@ namespace Dajjsand.View.Game.Cards
         {
             transform.parent = parent;
             if (resetPosition)
-                transform.localPosition = Vector3.zero;
+                transform.localPosition = new Vector3(0, 0.001f, 0);
         }
 
         #region PackCardLogic

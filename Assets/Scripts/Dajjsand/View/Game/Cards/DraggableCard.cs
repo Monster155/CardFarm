@@ -38,6 +38,7 @@ namespace Dajjsand.View.Game.Cards
         {
             _mainCamera = Camera.main;
             IsDraggingLocked = false;
+            LastDragTime = Time.time;
         }
 
         private void Start()

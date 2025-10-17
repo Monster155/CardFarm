@@ -146,19 +146,29 @@ namespace Dajjsand.Controllers.Craft
             var timer = DOVirtual.Float(0f, 1f, recipe._craftTime, onUpdate);
             timer.onComplete += () =>
             {
+                // find lowest card
                 var card = headCard;
-                card.Used();
                 while (card.ChildCard != null)
-                {
                     card = card.ChildCard;
-                    card.Used();
-                }
                 var lowestCard = card;
 
+                // get position of lowest card to spawn new one close to it
+                var newCardPosition = lowestCard.ChildContainer.position;
+                
+                // mark used all cards in deck from low to high
+                card = lowestCard;
+                card.Used();
+                while (card.ParentCard != null)
+                {
+                    card = card.ParentCard;
+                    card.Used();
+                }
+
+                // spawn new cards - recipe result
                 for (int i = 0; i < recipe._result.Count; i++)
                 {
                     CardType type = recipe._result[i];
-                    _cardFactory.GetCard(type, lowestCard.ChildContainer.position + CardUtils.CardOffset(i));
+                    _cardFactory.GetCard(type, newCardPosition + CardUtils.CardOffset(i));
                 }
 
                 onFinish?.Invoke();

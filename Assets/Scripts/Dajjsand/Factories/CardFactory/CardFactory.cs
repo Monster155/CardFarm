@@ -71,6 +71,7 @@ namespace Dajjsand.Factories.CardFactory
 
             card.Init(_cards[cardType]);
             card.name = cardType.ToString();
+            card.transform.parent = _containersHandler.CardsContainer;
             card.transform.position = pos;
 
             _tasksController.UpdateReceivedCards(cardType);
@@ -81,10 +82,12 @@ namespace Dajjsand.Factories.CardFactory
         public bool ReleaseCard(BaseCard card)
         {
             card.ReleasingCard();
-            card.transform.position = new Vector3(0f, -100f, 0f);
             card.transform.parent = _containersHandler.CardsContainer;
+            card.transform.position = new Vector3(0f, -100f, 0f);
             card.gameObject.SetActive(false);
+            
             _cardPool.Release(card);
+            
             return true;
         }
 

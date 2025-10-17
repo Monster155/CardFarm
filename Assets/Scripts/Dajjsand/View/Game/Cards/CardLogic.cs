@@ -126,6 +126,10 @@ namespace Dajjsand.View.Game.Cards
 
         public void AddCardsFrom(CardLogic newDeckCard)
         {
+            // stop merging if new cards in deck
+            HeadCard.StopMergeTimer();
+            newDeckCard.HeadCard.StopMergeTimer();
+
             // find the lowest card
             var currentDeckLowestCard = this;
             while (currentDeckLowestCard.ChildCard != null)
@@ -133,7 +137,7 @@ namespace Dajjsand.View.Game.Cards
 
             // set transform parent of decks
             newDeckCard.HeadCard.OnParentChanged?.Invoke(currentDeckLowestCard);
-            
+
             newDeckCard.ParentCard = currentDeckLowestCard;
             currentDeckLowestCard.ChildCard = newDeckCard.HeadCard; // add cards from new deck to bottom
             SetThisCardAsNewHeadCard(newDeckCard); // set new HeadCard to all cards from new deck
@@ -147,6 +151,7 @@ namespace Dajjsand.View.Game.Cards
             if (ParentCard == null)
                 return;
 
+            var oldHeadCard = HeadCard;
             HeadCard.StopMergeTimer();
 
             ParentCard.ChildCard = null;
@@ -156,6 +161,9 @@ namespace Dajjsand.View.Game.Cards
             SetThisCardAsNewHeadCard(this);
 
             OnParentChanged?.Invoke(null);
+            
+            oldHeadCard.TryToStartMerge();
+            TryToStartMerge();
         }
 
         private void SetThisCardAsNewHeadCard(CardLogic anyCardOfDeck)
