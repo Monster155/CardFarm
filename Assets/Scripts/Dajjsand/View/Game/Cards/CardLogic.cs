@@ -68,7 +68,10 @@ namespace Dajjsand.View.Game.Cards
         public void ReleasingCard()
         {
             // lowest card
-            // do nothing
+            if (ParentCard != null && ChildCard == null)
+            {
+                ParentCard.ChildCard = null;
+            }
 
             // middle card
             if (ParentCard != null && ChildCard != null)
@@ -77,7 +80,7 @@ namespace Dajjsand.View.Game.Cards
                 this.ChildCard.OnParentChanged?.Invoke(ParentCard);
             }
 
-            // highest card
+            // highest card OR the only one in deck
             if (HeadCard.ID == this.ID)
             {
                 if (ChildCard != null)
