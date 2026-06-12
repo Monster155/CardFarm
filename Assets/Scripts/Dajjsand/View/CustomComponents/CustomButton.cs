@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Dajjsand.Utils.Audio;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -14,17 +13,15 @@ namespace Dajjsand.View.CustomComponents
 {
     public class CustomButton : Button
     {
-        [SerializeField] private AudioClip _clickSound;
+        [SerializeField] private AudioSource _clickSoundSource;
         [SerializeField] private List<Graphic> _additionalTargetGraphics = new();
-
-        private AudioClip _defaultClickSound;
 
         protected override void Awake()
         {
             base.Awake();
 
-            if (_clickSound == null)
-                _clickSound = _defaultClickSound;
+            if (_clickSoundSource == null)
+                Debug.LogError("No click sound");
         }
 
         public override void OnPointerClick(PointerEventData eventData)
@@ -35,7 +32,7 @@ namespace Dajjsand.View.CustomComponents
 
         private void PlayClickSound()
         {
-            AudioController.Instance.PlaySound(_clickSound);
+            _clickSoundSource.Play();
         }
 
         protected override void DoStateTransition(SelectionState state, bool instant)
@@ -74,29 +71,24 @@ namespace Dajjsand.View.CustomComponents
 
             foreach (var graphic in graphics)
             {
+                if (graphic == targetGraphic)
+                    continue;
+
                 _additionalTargetGraphics.Add(graphic);
             }
         }
 
 #if UNITY_EDITOR
-        protected override void Reset()
-        {
-            base.Reset();
-
-            _defaultClickSound = Resources.Load<AudioClip>("Audio/Sounds/Menu/click");
-            _clickSound = _defaultClickSound;
-        }
-
         [CustomEditor(typeof(CustomButton))]
         public class CustomButtonEditor : ButtonEditor
         {
-            SerializedProperty _clickSound;
+            SerializedProperty _clickSoundSource;
             SerializedProperty _additionalTargetGraphics;
 
             protected override void OnEnable()
             {
                 base.OnEnable();
-                _clickSound = serializedObject.FindProperty("_clickSound");
+                _clickSoundSource = serializedObject.FindProperty("_clickSoundSource");
                 _additionalTargetGraphics = serializedObject.FindProperty("_additionalTargetGraphics");
             }
 
@@ -108,7 +100,7 @@ namespace Dajjsand.View.CustomComponents
 
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Custom Button Settings", EditorStyles.boldLabel);
-                EditorGUILayout.PropertyField(_clickSound);
+                EditorGUILayout.PropertyField(_clickSoundSource);
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(_additionalTargetGraphics, true);
 
